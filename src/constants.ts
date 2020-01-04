@@ -9,3 +9,10 @@ export const weirdCourseNames: { [s: string]: string } = {
 export const statusMap: { [s: string]: string } = {
   WaitList: "Wait List"
 };
+
+/*
+export const sectionTypes: { [s: string]: string } = {
+  LEC: "Lecture",
+  RCT: "Recitation"
+};
+*/

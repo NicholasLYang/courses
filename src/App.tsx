@@ -14,7 +14,7 @@ export interface ISection {
   recitations: Array<ISection> | null;
 }
 
-interface IMeeting {
+export interface IMeeting {
   beginDate: Date;
   duration: number;
   endDate: Date;
@@ -40,7 +40,7 @@ const App: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("http://schedge.a1liu.com/2020/sp/ua/csci");
+        const res = await fetch("https://albertsucks.com/2020/sp/ua/csci");
         const payload = await res.json();
         setCourses(payload);
         setLoading(false);

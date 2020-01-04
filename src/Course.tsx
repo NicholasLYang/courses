@@ -3,8 +3,8 @@ import { jsx } from "@emotion/core";
 
 import React, { useState } from "react";
 import { weirdCourseNames } from "./constants";
-import Section from "./Section";
 import { ISection } from "./App";
+import SectionsList from "./SectionsList";
 
 interface Props {
   name: string;
@@ -14,14 +14,18 @@ interface Props {
 
 const styles = {
   Course: {
-    padding: "10px",
     fontSize: "1.2rem",
     display: "flex",
     flexDirection: "column" as "column"
   },
   row: {
     display: "flex",
-    width: "80vw"
+    padding: "10px",
+    width: "80vw",
+    transition: "0.1s background-color",
+    "&:hover": {
+      backgroundColor: "#b9b9b9"
+    }
   },
   id: {
     width: "10%",
@@ -44,13 +48,7 @@ const Course: React.FC<Props> = ({ name, deptCourseId, sections }) => {
           {name in weirdCourseNames ? weirdCourseNames[name] : name}
         </div>
       </div>
-      {showSections && (
-        <ul>
-          {sections.map(section => (
-            <Section instructor={section.instructor} status={section.status} />
-          ))}
-        </ul>
-      )}
+      {showSections && <SectionsList sections={sections} />}
     </div>
   );
 };
