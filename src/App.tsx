@@ -40,7 +40,7 @@ const App: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("https://albertsucks.com/2020/sp/ua/csci");
+        const res = await fetch("https://api.albertsucks.com/2020/sp/ua/csci");
         const payload = await res.json();
         setCourses(payload);
         setLoading(false);
