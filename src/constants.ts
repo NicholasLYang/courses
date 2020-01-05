@@ -10,9 +10,7 @@ export const statusMap: { [s: string]: string } = {
   WaitList: "Wait List"
 };
 
-/*
-export const sectionTypes: { [s: string]: string } = {
-  LEC: "Lecture",
-  RCT: "Recitation"
+export const subjectNames = {
+  csci: "Computer Science",
+  math: "Math"
 };
-*/

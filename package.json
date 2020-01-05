@@ -18,7 +18,8 @@
     "react-scripts": "3.3.0",
     "react-spring": "^8.0.27",
     "semantic-ui-react": "^0.88.2",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "react-router-dom": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

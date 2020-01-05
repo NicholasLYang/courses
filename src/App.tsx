@@ -1,8 +1,10 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 
-import React, { useEffect, useState } from "react";
-import Course from "./Course";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import SubjectPage from "./SubjectPage";
+import HomePage from "./HomePage";
 
 export interface ISection {
   registrationNumber: number;
@@ -20,7 +22,7 @@ export interface IMeeting {
   endDate: Date;
 }
 
-interface ICourse {
+export interface ICourse {
   name: string;
   deptCourseId: string;
   sections: Array<ISection>;
@@ -30,52 +32,41 @@ const styles = {
   App: {
     display: "flex",
     flexDirection: "column" as "column",
-    padding: "20px"
+    alignItems: "center",
+    width: "100vw"
+  },
+  content: {
+    width: "60vw"
   }
 };
 
 const App: React.FC = () => {
-  const [courses, setCourses] = useState<Array<ICourse>>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("https://api.albertsucks.com/2020/sp/ua/csci");
-        const payload = await res.json();
-        setCourses(payload);
-        setLoading(false);
-      } catch (err) {
-        console.log("ERROR");
-        console.log(err);
-      }
-    })();
-  }, []);
-  if (loading) {
-    return (
-      <div css={styles.App}>
-        <header className="App-header">
-          <h1> Courses </h1>
-        </header>
-        <div>Loading...</div>
-      </div>
-    );
-  }
   return (
     <div css={styles.App}>
-      <header className="App-header">
-        <h1> Courses </h1>
-      </header>
-      <div>
-        {courses
-          .sort((a, b) => parseInt(a.deptCourseId) - parseInt(b.deptCourseId))
-          .map((course: ICourse) => (
-            <Course
-              name={course.name}
-              deptCourseId={course.deptCourseId}
-              sections={course.sections}
-            />
-          ))}
-      </div>
+      <Router>
+        <Link
+          css={{
+            textDecoration: "none",
+            color: "black",
+            "&:hover": {
+              textDecoration: "underline"
+            }
+          }}
+          to="/"
+        >
+          <h1> Schedge </h1>
+        </Link>
+        <div css={styles.content}>
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route path="/:code">
+              <SubjectPage />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 };

@@ -21,7 +21,7 @@ const styles = {
   row: {
     display: "flex",
     padding: "10px",
-    width: "80vw",
+    width: "50vw",
     transition: "0.1s background-color",
     "&:hover": {
       backgroundColor: "#b9b9b9"

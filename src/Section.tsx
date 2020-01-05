@@ -56,7 +56,7 @@ const Section: React.FC<Props> = ({
       <div
         css={{
           display: "flex",
-          width: "80vw",
+          width: "50vw",
           justifyContent: "space-evenly",
           padding: "10px"
         }}
@@ -75,9 +75,9 @@ const Section: React.FC<Props> = ({
       {recitations && (
         <ul
           css={{
-            paddingLeft: "40px",
+            marginLeft: "40px",
             backgroundColor: "#d9d9d9",
-            width: "60vw"
+            width: "50vw"
           }}
         >
           {recitations.map(r => (
