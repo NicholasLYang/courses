@@ -3,7 +3,7 @@ import { jsx } from "@emotion/core";
 import moment from "moment";
 import React from "react";
 import { statusMap } from "./constants";
-import { IMeeting, ISection } from "./App";
+import { IMeeting, ISection } from "./types";
 
 interface Props {
   type: string;
@@ -58,17 +58,21 @@ const Section: React.FC<Props> = ({
           display: "flex",
           width: "50vw",
           justifyContent: "space-evenly",
-          padding: "10px"
+          flexWrap: "wrap",
+          padding: "10px",
+          "@media(max-width: 700px)": {
+            flexDirection: "column"
+          }
         }}
       >
-        <div css={{ color: getStatusColor(status), width: "10%" }}>
+        <div css={{ color: getStatusColor(status) }}>
           {getStatusName(status)}{" "}
         </div>
-        <div css={{ width: "25%" }}>{instructor} </div>
-        <div css={{ width: "10%" }}> {meetingDays.join("\t")} </div>
-        <div css={{ width: "40%", display: "flex", flexDirection: "column" }}>
+        <div>{instructor} </div>
+        <div>{meetingDays.join("\t")} </div>
+        <div css={{ display: "flex", flexDirection: "column" }}>
           {meetingTimes.map(time => (
-            <div> {time} </div>
+            <div key={time}> {time} </div>
           ))}
         </div>
       </div>

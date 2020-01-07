@@ -3,8 +3,8 @@ import { jsx } from "@emotion/core";
 
 import React, { useState } from "react";
 import { weirdCourseNames } from "./constants";
-import { ISection } from "./App";
 import SectionsList from "./SectionsList";
+import { ISection } from "./types";
 
 interface Props {
   name: string;
@@ -29,6 +29,7 @@ const styles = {
   },
   id: {
     width: "10%",
+    minWidth: "50px",
     display: "flex",
     flexDirection: "column" as "column",
     alignItems: "center"

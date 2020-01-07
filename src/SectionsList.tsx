@@ -1,6 +1,6 @@
 import React from "react";
 import Section from "./Section";
-import { ISection } from "./App";
+import { ISection } from "./types";
 
 interface Props {
   sections: Array<ISection>;
