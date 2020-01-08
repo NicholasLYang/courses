@@ -1,27 +1,24 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-
-import { Link } from "react-router-dom";
-import { API_URL, subjectNames } from "./constants";
 import { useEffect, useState } from "react";
-import { getOrKey } from "./utils";
+import { API_URL } from "./constants";
 import { LoadingState } from "./types";
+import { Link } from "react-router-dom";
 
-interface Subject {
-  school: string;
-  subject: string;
+interface School {
+  code: string;
+  name: string;
 }
-
 const HomePage = () => {
   const [loadingState, setLoadingState] = useState(LoadingState.Loading);
-  const [subjects, setSubjects] = useState<Array<Subject>>([]);
+  const [schools, setSchools] = useState<Array<School>>([]);
   const [error, setError] = useState("");
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/subjects`);
+        const res = await fetch(`${API_URL}/schools`);
         const payload = await res.json();
-        setSubjects(payload);
+        setSchools(payload);
         setLoadingState(LoadingState.Success);
       } catch (err) {
         setLoadingState(LoadingState.Failed);
@@ -36,18 +33,11 @@ const HomePage = () => {
     return <div css={{ color: "red" }}> {error} </div>;
   }
   return (
-    <div
-      css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
-    >
-      {subjects
-        .sort((a, b) => a.subject.localeCompare(b.subject))
-        .filter(({ school }) => school === "UA")
-        .map(({ subject, school }) => (
-          <Link key={subject} to={`/${subject}`}>
-            {getOrKey(subject.toLowerCase(), subjectNames)}
-          </Link>
-        ))}
-    </div>
+    <ul css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}>
+      {schools.map(school => (
+        <Link to={`/${school.code}`}> {school.name} </Link>
+      ))}
+    </ul>
   );
 };
 

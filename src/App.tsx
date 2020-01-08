@@ -5,6 +5,7 @@ import React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import SubjectPage from "./SubjectPage";
 import HomePage from "./HomePage";
+import SchoolPage from "./SchoolPage";
 
 const styles = {
   App: {
@@ -40,8 +41,15 @@ const App: React.FC = () => {
             <Route exact path="/">
               <HomePage />
             </Route>
-            <Route path="/:code">
-              <SubjectPage />
+            <Route path="/:school">
+              <Switch>
+                <Route exact path="/:school">
+                  <SchoolPage />
+                </Route>
+                <Route path="/:school/:code">
+                  <SubjectPage />
+                </Route>
+              </Switch>
             </Route>
           </Switch>
         </div>
