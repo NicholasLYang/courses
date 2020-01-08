@@ -19,3 +19,9 @@ export interface ICourse {
   deptCourseId: string;
   sections: Array<ISection>;
 }
+
+export enum LoadingState {
+  Loading,
+  Success,
+  Failed
+}

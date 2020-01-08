@@ -1,14 +1,11 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
+
 import React, { useEffect, useState } from "react";
-import { ICourse } from "./types";
+import { ICourse, LoadingState } from "./types";
 import { API_URL, subjectNames } from "./constants";
 import { getOrKey } from "./utils";
 import Course from "./Course";
-
-enum LoadingState {
-  Loading,
-  Success,
-  Failed
-}
 
 interface Props {
   code: string;
@@ -19,7 +16,7 @@ export const SubjectCourseList: React.FC<Props> = ({ code }) => {
   const [loadingState, setLoadingState] = useState<LoadingState>(
     LoadingState.Loading
   );
-  const [error, setError] = useState(new Error());
+  const [error, setError] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -29,10 +26,9 @@ export const SubjectCourseList: React.FC<Props> = ({ code }) => {
         setCourses(payload);
         setLoadingState(LoadingState.Success);
       } catch (err) {
+        setLoadingState(LoadingState.Failed);
         setError(
-          new Error(
-            `Error fetching subject ${getOrKey(code!, subjectNames)}: ${err}`
-          )
+          `Error fetching subject ${getOrKey(code!, subjectNames)}: ${err}`
         );
       }
     })();
@@ -41,7 +37,7 @@ export const SubjectCourseList: React.FC<Props> = ({ code }) => {
     return <div>Loading...</div>;
   }
   if (loadingState === LoadingState.Failed) {
-    return <div> Error: {error.toString()} </div>;
+    return <div css={{ color: "red" }}> {error} </div>;
   }
   if (courses.length === 0) {
     return <div> No courses available </div>;

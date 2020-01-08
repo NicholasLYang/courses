@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { API_URL, subjectNames } from "./constants";
 import { useEffect, useState } from "react";
 import { getOrKey } from "./utils";
+import { LoadingState } from "./types";
 
 interface Subject {
   school: string;
@@ -12,22 +13,27 @@ interface Subject {
 }
 
 const HomePage = () => {
-  const [loading, setLoading] = useState(true);
+  const [loadingState, setLoadingState] = useState(LoadingState.Loading);
   const [subjects, setSubjects] = useState<Array<Subject>>([]);
+  const [error, setError] = useState("");
   useEffect(() => {
     (async () => {
       try {
         const res = await fetch(`${API_URL}/subjects`);
         const payload = await res.json();
         setSubjects(payload);
-        setLoading(false);
+        setLoadingState(LoadingState.Success);
       } catch (err) {
-        console.error(`Error fetching subjects: ${err}`);
+        setLoadingState(LoadingState.Failed);
+        setError(`Error fetching subjects: ${err}`);
       }
     })();
   }, []);
-  if (loading) {
+  if (loadingState === LoadingState.Loading) {
     return <h2> Loading...</h2>;
+  }
+  if (loadingState === LoadingState.Failed) {
+    return <div css={{ color: "red" }}> {error} </div>;
   }
   return (
     <div
