@@ -16,7 +16,7 @@ export interface School {
 const styles = {
   App: {
     display: "flex",
-    flexDirection: "column" as "column",
+    flexDirection: "column",
     alignItems: "center",
     width: "100vw",
     paddingBottom: "50px"
@@ -24,7 +24,9 @@ const styles = {
   content: {
     width: "60vw"
   }
-};
+} as const;
+export const delay = (time: number) =>
+  new Promise(resolve => setTimeout(resolve, time));
 
 const App: React.FC = () => {
   const [loadingState, setLoadingState] = useState(LoadingState.Loading);
@@ -33,6 +35,8 @@ const App: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
+        // Just to mess with Albert
+        await delay(1000);
         const res = await fetch(`${API_URL}/schools`);
         const payload = await res.json();
         const schools: { [s: string]: string } = {};
@@ -48,7 +52,11 @@ const App: React.FC = () => {
     })();
   }, []);
   if (loadingState === LoadingState.Loading) {
-    return <h2> Loading...</h2>;
+    return (
+      <div css={{ ...styles.App, height: "100vh", justifyContent: "center" }}>
+        <h2> Loading...</h2>;
+      </div>
+    );
   }
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
