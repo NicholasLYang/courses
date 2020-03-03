@@ -2,8 +2,13 @@ import React from "react";
 import { useParams } from "react-router";
 import { Link, useHistory } from "react-router-dom";
 import SchoolSubjectsList from "./SchoolSubjectsList";
+import { getOrKey } from "./utils";
 
-const SchoolPage = () => {
+interface Props {
+  schools: { [s: string]: string };
+}
+
+const SchoolPage: React.FC<Props> = ({ schools }) => {
   const { school } = useParams();
   const history = useHistory();
 
@@ -17,7 +22,7 @@ const SchoolPage = () => {
   } else {
     return (
       <div>
-        <h2> {school}</h2>
+        <h2> {getOrKey(school, schools)}</h2>
         <SchoolSubjectsList school={school} />
       </div>
     );

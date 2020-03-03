@@ -45,7 +45,7 @@ const SchoolSubjectsList: React.FC<Props> = ({ school }) => {
       {subjects
         .sort((a, b) => a.subject.localeCompare(b.subject))
         .map(({ subject, school }) => (
-          <Link key={subject} to={`/${subject}`}>
+          <Link key={subject} to={`/${school}/${subject}`}>
             {getOrKey(subject.toLowerCase(), subjectNames)}
           </Link>
         ))}

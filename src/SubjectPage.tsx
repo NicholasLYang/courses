@@ -15,9 +15,9 @@ const styles = {
 };
 
 const SubjectPage: React.FC = () => {
-  const { code } = useParams();
+  const { code, school } = useParams();
   const history = useHistory();
-  if (code === undefined) {
+  if (code === undefined || school === undefined) {
     history.push("/");
     return (
       <div>
@@ -31,7 +31,7 @@ const SubjectPage: React.FC = () => {
         <header>
           <h3> Courses </h3>
         </header>{" "}
-        <SubjectCourseList code={code} />
+        <SubjectCourseList code={code} school={school} />
       </div>
     );
   }
