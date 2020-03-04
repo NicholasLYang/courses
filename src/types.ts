@@ -1,11 +1,12 @@
 export interface ISection {
   registrationNumber: number;
   sectionCode: string;
-  instructor: string;
+  instructors: Array<string>;
   type: string;
   status: string;
   meetings: Array<IMeeting>;
   recitations: Array<ISection> | null;
+  location: string;
 }
 
 export interface IMeeting {

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import SubjectPage from "./SubjectPage";
 import HomePage from "./HomePage";
 import SchoolPage from "./SchoolPage";
+import { delay } from "./utils";
 
 export interface School {
   code: string;
@@ -25,8 +26,6 @@ const styles = {
     width: "60vw"
   }
 } as const;
-export const delay = (time: number) =>
-  new Promise(resolve => setTimeout(resolve, time));
 
 const App: React.FC = () => {
   const [loadingState, setLoadingState] = useState(LoadingState.Loading);
@@ -36,7 +35,7 @@ const App: React.FC = () => {
     (async () => {
       try {
         // Just to mess with Albert
-        await delay(1000);
+        await delay(500 + Math.random() * 500);
         const res = await fetch(`${API_URL}/schools`);
         const payload = await res.json();
         const schools: { [s: string]: string } = {};

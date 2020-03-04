@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/core";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getOrKey } from "./utils";
+import { delay, getOrKey } from "./utils";
 import { API_URL, subjectNames } from "./constants";
 import { LoadingState } from "./types";
 
@@ -22,6 +22,8 @@ const SchoolSubjectsList: React.FC<Props> = ({ school }) => {
   useEffect(() => {
     (async () => {
       try {
+        // Hehe
+        await delay(500 + Math.random() * 500);
         const res = await fetch(`${API_URL}/subjects?school=${school}`);
         const payload = await res.json();
         setSubjects(payload);

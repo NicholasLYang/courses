@@ -4,13 +4,15 @@ import moment from "moment";
 import React from "react";
 import { statusMap } from "./constants";
 import { IMeeting, ISection } from "./types";
+import { fixLocation } from "./utils";
 
 interface Props {
   type: string;
-  instructor: string;
+  instructors: Array<string>;
   status: string;
   meetings: Array<IMeeting>;
   recitations: null | Array<ISection>;
+  location: string;
 }
 
 function getStatusColor(status: string): string {
@@ -35,14 +37,15 @@ function getStatusName(status: string): string {
 
 const Section: React.FC<Props> = ({
   recitations,
-  instructor,
+  instructors,
   status,
-  meetings
+  meetings,
+  location
 }) => {
   const meetingDateTimes = [];
   const meetingDays: string[] = [];
   const meetingTimes: string[] = [];
-  meetings.forEach(m => {
+  meetings?.forEach(m => {
     const dateTime = moment.utc(m.beginDate);
     meetingDateTimes.push(dateTime);
     meetingDays.push(dateTime.format("ddd"));
@@ -56,7 +59,7 @@ const Section: React.FC<Props> = ({
       <div
         css={{
           display: "flex",
-          width: "50vw",
+          maxWidth: "50vw",
           justifyContent: "space-evenly",
           flexWrap: "wrap",
           padding: "10px",
@@ -68,7 +71,12 @@ const Section: React.FC<Props> = ({
         <div css={{ color: getStatusColor(status) }}>
           {getStatusName(status)}{" "}
         </div>
-        <div>{instructor} </div>
+        <div css={{ display: "flex", width: "20%", flexDirection: "column" }}>
+          {instructors.map(i => (
+            <div> {i} </div>
+          ))}
+        </div>
+        <div css={{ width: "30%" }}> {fixLocation(location)} </div>
         <div>{meetingDays.join("\t")} </div>
         <div css={{ display: "flex", flexDirection: "column" }}>
           {meetingTimes.map(time => (
