@@ -13,6 +13,7 @@ interface Props {
   meetings: Array<IMeeting>;
   recitations: null | Array<ISection>;
   location: string;
+  sectionName: string;
 }
 
 function getStatusColor(status: string): string {
@@ -40,7 +41,8 @@ const Section: React.FC<Props> = ({
   instructors,
   status,
   meetings,
-  location
+  location,
+  sectionName
 }) => {
   const meetingDateTimes = [];
   const meetingDays: string[] = [];
@@ -71,12 +73,13 @@ const Section: React.FC<Props> = ({
         <div css={{ color: getStatusColor(status) }}>
           {getStatusName(status)}{" "}
         </div>
-        <div css={{ display: "flex", width: "20%", flexDirection: "column" }}>
+        <div css={{ width: "15%" }}>{sectionName}</div>
+        <div css={{ display: "flex", width: "15%", flexDirection: "column" }}>
           {instructors.map(i => (
             <div> {i} </div>
           ))}
         </div>
-        <div css={{ width: "30%" }}> {fixLocation(location)} </div>
+        <div css={{ width: "20%" }}> {fixLocation(location)} </div>
         <div>{meetingDays.join("\t")} </div>
         <div css={{ display: "flex", flexDirection: "column" }}>
           {meetingTimes.map(time => (

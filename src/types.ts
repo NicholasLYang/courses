@@ -7,6 +7,7 @@ export interface ISection {
   meetings: Array<IMeeting>;
   recitations: Array<ISection> | null;
   location: string;
+  sectionName: string;
 }
 
 export interface IMeeting {

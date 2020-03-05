@@ -9,10 +9,10 @@ interface Props {
 }
 
 const SchoolPage: React.FC<Props> = ({ schools }) => {
-  const { school } = useParams();
+  const { school, semester } = useParams();
   const history = useHistory();
 
-  if (school === undefined) {
+  if (school === undefined || semester === undefined) {
     history.push("/");
     return (
       <div>
@@ -23,7 +23,7 @@ const SchoolPage: React.FC<Props> = ({ schools }) => {
     return (
       <div>
         <h2> {getOrKey(school, schools)}</h2>
-        <SchoolSubjectsList school={school} />
+        <SchoolSubjectsList school={school} semester={semester} />
       </div>
     );
   }

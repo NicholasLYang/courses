@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { delay, getOrKey } from "./utils";
 import { API_URL, subjectNames } from "./constants";
 import { LoadingState } from "./types";
@@ -13,12 +13,14 @@ interface Subject {
 
 interface Props {
   school: string;
+  semester: string;
 }
 
-const SchoolSubjectsList: React.FC<Props> = ({ school }) => {
+const SchoolSubjectsList: React.FC<Props> = ({ school, semester }) => {
   const [loadingState, setLoadingState] = useState(LoadingState.Loading);
   const [subjects, setSubjects] = useState<Array<Subject>>([]);
   const [error, setError] = useState("");
+  const history = useHistory();
   useEffect(() => {
     (async () => {
       try {
@@ -40,6 +42,10 @@ const SchoolSubjectsList: React.FC<Props> = ({ school }) => {
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
+  if (!Array.isArray(subjects)) {
+    history.push("/");
+    return <div> Server Error </div>;
+  }
   return (
     <div
       css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
@@ -47,7 +53,7 @@ const SchoolSubjectsList: React.FC<Props> = ({ school }) => {
       {subjects
         .sort((a, b) => a.subject.localeCompare(b.subject))
         .map(({ subject, school }) => (
-          <Link key={subject} to={`/${school}/${subject}`}>
+          <Link key={subject} to={`/${semester}/${school}/${subject}`}>
             {getOrKey(subject.toLowerCase(), subjectNames)}
           </Link>
         ))}

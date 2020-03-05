@@ -10,9 +10,16 @@ import Course from "./Course";
 interface Props {
   code: string;
   school: string;
+  year: string;
+  season: string;
 }
 
-export const SubjectCourseList: React.FC<Props> = ({ code, school }) => {
+export const SubjectCourseList: React.FC<Props> = ({
+  code,
+  school,
+  year,
+  season
+}) => {
   const [courses, setCourses] = useState<Array<ICourse>>([]);
   const [loadingState, setLoadingState] = useState<LoadingState>(
     LoadingState.Loading
@@ -22,7 +29,9 @@ export const SubjectCourseList: React.FC<Props> = ({ code, school }) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/2020/sp/${school}/${code}`);
+        const res = await fetch(
+          `${API_URL}/${year}/${season}/${school}/${code}`
+        );
         const payload = await res.json();
         setCourses(payload);
         setLoadingState(LoadingState.Success);
@@ -33,7 +42,7 @@ export const SubjectCourseList: React.FC<Props> = ({ code, school }) => {
         );
       }
     })();
-  }, [code, school]);
+  }, [code, school, season, year]);
   if (loadingState === LoadingState.Loading) {
     return <div>Loading...</div>;
   }

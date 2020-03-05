@@ -8,6 +8,7 @@ import SubjectPage from "./SubjectPage";
 import HomePage from "./HomePage";
 import SchoolPage from "./SchoolPage";
 import { delay } from "./utils";
+import SemesterPage from "./SemesterPage";
 
 export interface School {
   code: string;
@@ -80,12 +81,16 @@ const App: React.FC = () => {
             <Route exact path="/">
               <HomePage schools={schools} />
             </Route>
-            <Route path="/:school">
+            <Route path="/:semester">
               <Switch>
-                <Route exact path="/:school">
+                <Route exact path="/:semester">
+                  {" "}
+                  <SemesterPage schools={schools} />
+                </Route>
+                <Route exact path="/:semester/:school">
                   <SchoolPage schools={schools} />
                 </Route>
-                <Route path="/:school/:code">
+                <Route path="/:semester/:school/:code">
                   <SubjectPage />
                 </Route>
               </Switch>
