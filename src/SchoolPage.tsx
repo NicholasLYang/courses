@@ -3,13 +3,12 @@ import { useParams } from "react-router";
 import { Link, useHistory } from "react-router-dom";
 import SchoolSubjectsList from "./SchoolSubjectsList";
 import { getOrKey } from "./utils";
+import { useSelector } from "react-redux";
+import { RootState } from "./duck";
 
-interface Props {
-  schools: { [s: string]: string };
-}
-
-const SchoolPage: React.FC<Props> = ({ schools }) => {
+const SchoolPage: React.FC = () => {
   const { school, semester } = useParams();
+  const schools = useSelector((state: RootState) => state.core.schools);
   const history = useHistory();
 
   if (school === undefined || semester === undefined) {
