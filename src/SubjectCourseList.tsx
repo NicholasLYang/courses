@@ -1,62 +1,48 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ICourse, LoadingState } from "./types";
-import { API_URL, subjectNames } from "./constants";
-import { getOrKey } from "./utils";
 import Course from "./Course";
+import { useDispatch, useSelector } from "react-redux";
+import { getCourses, RootState } from "./duck";
 
 interface Props {
-  code: string;
-  school: string;
+  subjectCode: string;
+  schoolCode: string;
   year: string;
   season: string;
 }
 
 export const SubjectCourseList: React.FC<Props> = ({
-  code,
-  school,
+  subjectCode,
+  schoolCode,
   year,
   season
 }) => {
-  const [courses, setCourses] = useState<Array<ICourse>>([]);
-  const [loadingState, setLoadingState] = useState<LoadingState>(
-    LoadingState.Loading
-  );
-  const [error, setError] = useState("");
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(
-          `${API_URL}/${year}/${season}/${school}/${code}`
-        );
-        const payload = await res.json();
-        setCourses(payload);
-        setLoadingState(LoadingState.Success);
-      } catch (err) {
-        setLoadingState(LoadingState.Failed);
-        setError(
-          `Error fetching subject ${getOrKey(code!, subjectNames)}: ${err}`
-        );
-      }
-    })();
-  }, [code, school, season, year]);
+    dispatch(getCourses(year, season, schoolCode, subjectCode));
+  }, [subjectCode, schoolCode, season, year, dispatch]);
+  const loadingState = useSelector(
+    (state: RootState) => state.core.loadingState
+  );
+  const courses = useSelector(
+    (state: RootState) => state.core.courses[`${subjectCode}-${schoolCode}`]
+  );
+  const error = useSelector((state: RootState) => state.core.error);
   if (loadingState === LoadingState.Loading) {
-    return <div>Loading...</div>;
+    return <h2> Loading...</h2>;
   }
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  if (courses.length === 0) {
-    return <div> No courses available </div>;
-  }
+  const subjectCourses = courses && [...courses];
   return (
     <div>
-      {courses
-        .sort((a, b) => parseInt(a.deptCourseId) - parseInt(b.deptCourseId))
-        .map((course: ICourse) => (
+      {subjectCourses
+        ?.sort((a, b) => parseInt(a.deptCourseId) - parseInt(b.deptCourseId))
+        ?.map((course: ICourse) => (
           <Course
             key={course.deptCourseId}
             name={course.name}

@@ -29,11 +29,11 @@ export enum LoadingState {
 }
 
 export interface ISubject {
-  school: string;
-  subject: string;
+  name: string;
 }
 
 export interface ISchool {
   name: string;
-  subjects: Array<ISubject>;
+  code: string;
+  subjects: { [s: string]: ISubject };
 }

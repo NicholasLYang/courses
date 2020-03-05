@@ -20,9 +20,7 @@ const SchoolSubjectsList: React.FC<Props> = ({ code, school, semester }) => {
     (state: RootState) => state.core.loadingState
   );
   useEffect(() => {
-    (async () => {
-      dispatch(getSubjects(code));
-    })();
+    dispatch(getSubjects(code));
   }, [dispatch, code]);
   const error = useSelector((state: RootState) => state.core.error);
   if (loadingState === LoadingState.Loading) {
@@ -31,15 +29,15 @@ const SchoolSubjectsList: React.FC<Props> = ({ code, school, semester }) => {
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  const subjects = [...school.subjects];
+  const subjects = Object.entries(school.subjects);
   return (
     <div
       css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
     >
       {subjects
-        .sort((a, b) => a.subject.localeCompare(b.subject))
-        .map(({ subject, school }) => (
-          <Link key={subject} to={`/${semester}/${school}/${subject}`}>
+        .sort((a, b) => a[1].name.localeCompare(b[1].name))
+        .map(([subject]) => (
+          <Link key={subject} to={`/${semester}/${school.code}/${subject}`}>
             {getOrKey(subject.toLowerCase(), subjectNames)}
           </Link>
         ))}

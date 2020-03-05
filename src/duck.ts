@@ -6,7 +6,7 @@ import {
   PayloadAction
 } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
-import { ISchool, ISubject, LoadingState } from "./types";
+import { ICourse, ISchool, ISubject, LoadingState } from "./types";
 import { API_URL } from "./constants";
 import { delay } from "./utils";
 
@@ -23,18 +23,26 @@ if (process.env.NODE_ENV === "development" && module.hot) {
 interface CoreState {
   loadingState: LoadingState;
   schools: { [s: string]: ISchool };
+  courses: { [s: string]: ICourse[] };
   error: string | undefined;
 }
 
 const initialState: CoreState = {
   loadingState: LoadingState.Loading,
   schools: {},
+  courses: {},
   error: undefined
 };
 
 interface GetSubjectPayload {
-  subjects: ISubject[];
+  subjects: { [s: string]: ISubject };
   code: string;
+}
+
+interface GetCoursesPayload {
+  courses: ICourse[];
+  schoolCode: string;
+  subjectCode: string;
 }
 
 const coreSlice = createSlice({
@@ -56,6 +64,15 @@ const coreSlice = createSlice({
       state.loadingState = LoadingState.Failed;
       state.error = action.payload;
     },
+    getCoursesSuccess(state, action: PayloadAction<GetCoursesPayload>) {
+      const { schoolCode, subjectCode, courses } = action.payload;
+      state.courses[`${subjectCode}-${schoolCode}`] = courses;
+      state.loadingState = LoadingState.Success;
+    },
+    getCoursesFailure(state, action: PayloadAction<string>) {
+      state.loadingState = LoadingState.Failed;
+      state.error = action.payload;
+    },
     startLoading(state) {
       state.loadingState = LoadingState.Loading;
     },
@@ -70,6 +87,8 @@ const {
   getSchoolsFailure,
   getSubjectsSuccess,
   getSubjectsFailure,
+  getCoursesSuccess,
+  getCoursesFailure,
   startLoading,
   finishLoading
 } = coreSlice.actions;
@@ -86,7 +105,11 @@ export const getSchools = (): AppThunk => async (dispatch, getState) => {
       const payload = await res.json();
       const schools: { [s: string]: ISchool } = {};
       for (const school of payload) {
-        schools[school.code] = { name: school.name, subjects: [] };
+        schools[school.code] = {
+          name: school.name,
+          code: school.code,
+          subjects: {}
+        };
       }
       dispatch(getSchoolsSuccess(schools));
     } catch (e) {
@@ -104,19 +127,47 @@ export const getSubjects = (code: string): AppThunk => async (
   const {
     core: { schools }
   } = getState();
-  if (schools[code].subjects.length === 0) {
+  if (Object.entries(schools[code].subjects).length === 0) {
     try {
       dispatch(startLoading());
       // Hehe
       await delay(500 + Math.random() * 500);
       const res = await fetch(`${API_URL}/subjects?school=${code}`);
       const payload = await res.json();
-      dispatch(getSubjectsSuccess({ subjects: payload, code }));
+      const subjects: { [s: string]: ISubject } = {};
+      for (const subject of payload) {
+        subjects[subject.subject] = { name: subject.name };
+      }
+      dispatch(getSubjectsSuccess({ subjects, code }));
     } catch (err) {
       dispatch(getSubjectsFailure(err.toString()));
     }
   } else {
     dispatch(finishLoading());
+  }
+};
+
+export const getCourses = (
+  year: string,
+  season: string,
+  schoolCode: string,
+  subjectCode: string
+): AppThunk => async (dispatch, getState) => {
+  const {
+    core: { courses }
+  } = getState();
+  if (courses[`${subjectCode}-${schoolCode}`] === undefined) {
+    try {
+      dispatch(startLoading());
+      const res = await fetch(
+        `${API_URL}/${year}/${season}/${schoolCode}/${subjectCode}`
+      );
+      const courses = await res.json();
+      const payload = { subjectCode, schoolCode, courses };
+      dispatch(getCoursesSuccess(payload));
+    } catch (err) {
+      dispatch(getCoursesFailure(err.toString()));
+    }
   }
 };
 

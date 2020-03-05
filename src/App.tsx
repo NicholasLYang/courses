@@ -27,9 +27,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const error = useSelector((state: RootState) => state.core.error);
   useEffect(() => {
-    (async () => {
-      dispatch(getSchools());
-    })();
+    dispatch(getSchools());
   }, [dispatch]);
   const loadingState = useSelector(
     (state: RootState) => state.core.loadingState
@@ -37,7 +35,7 @@ const App: React.FC = () => {
   if (loadingState === LoadingState.Loading) {
     return (
       <div css={{ ...styles.App, height: "100vh", justifyContent: "center" }}>
-        <h2> Loading...</h2>;
+        <h2> Loading...</h2>
       </div>
     );
   }
@@ -57,7 +55,7 @@ const App: React.FC = () => {
           }}
           to="/"
         >
-          <h1> Schedge </h1>
+          <h1> Courses </h1>
         </Link>
         <div css={styles.content}>
           <Switch>
