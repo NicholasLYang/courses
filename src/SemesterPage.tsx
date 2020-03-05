@@ -10,9 +10,9 @@ const SemesterPage: React.FC = () => {
   const schools = useSelector((state: RootState) => state.core.schools);
   return (
     <ul css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}>
-      {Object.entries(schools).map(([code, name]) => (
+      {Object.entries(schools).map(([code, school]) => (
         <Link key={code} to={`/${semester}/${code}`}>
-          {name}
+          {school.name}
         </Link>
       ))}
     </ul>

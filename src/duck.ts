@@ -6,7 +6,7 @@ import {
   PayloadAction
 } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
-import { LoadingState } from "./types";
+import { ISchool, ISubject, LoadingState } from "./types";
 import { API_URL } from "./constants";
 import { delay } from "./utils";
 
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "development" && module.hot) {
 
 interface CoreState {
   loadingState: LoadingState;
-  schools: { [s: string]: string };
+  schools: { [s: string]: ISchool };
   error: string | undefined;
 }
 
@@ -32,16 +32,32 @@ const initialState: CoreState = {
   error: undefined
 };
 
+interface GetSubjectPayload {
+  subjects: ISubject[];
+  code: string;
+}
+
 const coreSlice = createSlice({
   name: "core",
   initialState,
   reducers: {
-    getSchoolsSuccess(state, action: PayloadAction<{ [s: string]: string }>) {
+    getSchoolsSuccess(state, action: PayloadAction<{ [s: string]: ISchool }>) {
       state.loadingState = LoadingState.Success;
       state.schools = action.payload;
     },
     getSchoolsFailure(state, action: PayloadAction<string>) {
       state.error = action.payload;
+    },
+    getSubjectsSuccess(state, action: PayloadAction<GetSubjectPayload>) {
+      state.schools[action.payload.code].subjects = action.payload.subjects;
+      state.loadingState = LoadingState.Success;
+    },
+    getSubjectsFailure(state, action: PayloadAction<string>) {
+      state.loadingState = LoadingState.Failed;
+      state.error = action.payload;
+    },
+    startLoading(state) {
+      state.loadingState = LoadingState.Loading;
     },
     finishLoading(state) {
       state.loadingState = LoadingState.Success;
@@ -52,6 +68,9 @@ const coreSlice = createSlice({
 const {
   getSchoolsSuccess,
   getSchoolsFailure,
+  getSubjectsSuccess,
+  getSubjectsFailure,
+  startLoading,
   finishLoading
 } = coreSlice.actions;
 
@@ -65,13 +84,36 @@ export const getSchools = (): AppThunk => async (dispatch, getState) => {
     try {
       const res = await fetch(`${API_URL}/schools`);
       const payload = await res.json();
-      const schools: { [s: string]: string } = {};
+      const schools: { [s: string]: ISchool } = {};
       for (const school of payload) {
-        schools[school.code] = school.name;
+        schools[school.code] = { name: school.name, subjects: [] };
       }
       dispatch(getSchoolsSuccess(schools));
     } catch (e) {
       dispatch(getSchoolsFailure(e.toString()));
+    }
+  } else {
+    dispatch(finishLoading());
+  }
+};
+
+export const getSubjects = (code: string): AppThunk => async (
+  dispatch,
+  getState
+) => {
+  const {
+    core: { schools }
+  } = getState();
+  if (schools[code].subjects.length === 0) {
+    try {
+      dispatch(startLoading());
+      // Hehe
+      await delay(500 + Math.random() * 500);
+      const res = await fetch(`${API_URL}/subjects?school=${code}`);
+      const payload = await res.json();
+      dispatch(getSubjectsSuccess({ subjects: payload, code }));
+    } catch (err) {
+      dispatch(getSubjectsFailure(err.toString()));
     }
   } else {
     dispatch(finishLoading());

@@ -10,11 +10,6 @@ import SchoolPage from "./SchoolPage";
 import SemesterPage from "./SemesterPage";
 import { getSchools, RootState } from "./duck";
 
-export interface School {
-  code: string;
-  name: string;
-}
-
 const styles = {
   App: {
     display: "flex",
@@ -30,15 +25,15 @@ const styles = {
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
-  const loadingState = useSelector(
-    (state: RootState) => state.core.loadingState
-  );
   const error = useSelector((state: RootState) => state.core.error);
   useEffect(() => {
     (async () => {
       dispatch(getSchools());
     })();
-  }, [loadingState, dispatch]);
+  }, [dispatch]);
+  const loadingState = useSelector(
+    (state: RootState) => state.core.loadingState
+  );
   if (loadingState === LoadingState.Loading) {
     return (
       <div css={{ ...styles.App, height: "100vh", justifyContent: "center" }}>
