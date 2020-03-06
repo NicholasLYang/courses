@@ -8,7 +8,6 @@ import {
 import { ThunkAction } from "redux-thunk";
 import { ICourse, ISchool, ISubject, LoadingState } from "./types";
 import { API_URL } from "./constants";
-import { delay } from "./utils";
 
 // Hot Loading setup
 //@ts-ignore
@@ -98,8 +97,6 @@ export const getSchools = (): AppThunk => async (dispatch, getState) => {
     core: { schools }
   } = getState();
   if (Object.entries(schools).length === 0) {
-    // Just to mess with Albert
-    await delay(500 + Math.random() * 500);
     try {
       const res = await fetch(`${API_URL}/schools`);
       const payload = await res.json();
@@ -130,13 +127,11 @@ export const getSubjects = (code: string): AppThunk => async (
   if (Object.entries(schools[code].subjects).length === 0) {
     try {
       dispatch(startLoading());
-      // Hehe
-      await delay(500 + Math.random() * 500);
       const res = await fetch(`${API_URL}/subjects?school=${code}`);
       const payload = await res.json();
       const subjects: { [s: string]: ISubject } = {};
       for (const subject of payload) {
-        subjects[subject.subject] = { name: subject.name };
+        subjects[subject.code] = { name: subject.name };
       }
       dispatch(getSubjectsSuccess({ subjects, code }));
     } catch (err) {

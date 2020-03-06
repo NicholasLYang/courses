@@ -31,18 +31,18 @@ export const SubjectCourseList: React.FC<Props> = ({
     (state: RootState) => state.core.courses[`${subjectCode}-${schoolCode}`]
   );
   const error = useSelector((state: RootState) => state.core.error);
-  if (loadingState === LoadingState.Loading) {
+  if (loadingState === LoadingState.Loading || courses === undefined) {
     return <h2> Loading...</h2>;
   }
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  const subjectCourses = courses && [...courses];
+  const subjectCourses = [...courses];
   return (
     <div>
       {subjectCourses
-        ?.sort((a, b) => parseInt(a.deptCourseId) - parseInt(b.deptCourseId))
-        ?.map((course: ICourse) => (
+        .sort((a, b) => parseInt(a.deptCourseId) - parseInt(b.deptCourseId))
+        .map((course: ICourse) => (
           <Course
             key={course.deptCourseId}
             name={course.name}
