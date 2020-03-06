@@ -28,7 +28,8 @@ export const SubjectCourseList: React.FC<Props> = ({
     (state: RootState) => state.core.loadingState
   );
   const courses = useSelector(
-    (state: RootState) => state.core.courses[`${subjectCode}-${schoolCode}`]
+    (state: RootState) =>
+      state.core.courses[`${year}-${season}-${subjectCode}-${schoolCode}`]
   );
   const error = useSelector((state: RootState) => state.core.error);
   if (loadingState === LoadingState.Loading || courses === undefined) {

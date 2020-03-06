@@ -40,6 +40,8 @@ interface GetSubjectPayload {
 
 interface GetCoursesPayload {
   courses: ICourse[];
+  year: string;
+  season: string;
   schoolCode: string;
   subjectCode: string;
 }
@@ -64,8 +66,8 @@ const coreSlice = createSlice({
       state.error = action.payload;
     },
     getCoursesSuccess(state, action: PayloadAction<GetCoursesPayload>) {
-      const { schoolCode, subjectCode, courses } = action.payload;
-      state.courses[`${subjectCode}-${schoolCode}`] = courses;
+      const { year, season, schoolCode, subjectCode, courses } = action.payload;
+      state.courses[`${year}-${season}-${subjectCode}-${schoolCode}`] = courses;
       state.loadingState = LoadingState.Success;
     },
     getCoursesFailure(state, action: PayloadAction<string>) {
@@ -151,14 +153,14 @@ export const getCourses = (
   const {
     core: { courses }
   } = getState();
-  if (courses[`${subjectCode}-${schoolCode}`] === undefined) {
+  if (courses[`${year}-${season}-${subjectCode}-${schoolCode}`] === undefined) {
     try {
       dispatch(startLoading());
       const res = await fetch(
         `${API_URL}/${year}/${season}/${schoolCode}/${subjectCode}`
       );
       const courses = await res.json();
-      const payload = { subjectCode, schoolCode, courses };
+      const payload = { subjectCode, schoolCode, year, season, courses };
       dispatch(getCoursesSuccess(payload));
     } catch (err) {
       dispatch(getCoursesFailure(err.toString()));
