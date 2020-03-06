@@ -2,17 +2,15 @@ import React from "react";
 import { useParams } from "react-router";
 import { Link, useHistory } from "react-router-dom";
 import SchoolSubjectsList from "./SchoolSubjectsList";
-import { getOrKey } from "./utils";
+import { useSelector } from "react-redux";
+import { RootState } from "./duck";
 
-interface Props {
-  schools: { [s: string]: string };
-}
-
-const SchoolPage: React.FC<Props> = ({ schools }) => {
-  const { school, semester } = useParams();
+const SchoolPage: React.FC = () => {
+  const { school: code, semester } = useParams();
+  const schools = useSelector((state: RootState) => state.core.schools);
   const history = useHistory();
 
-  if (school === undefined || semester === undefined) {
+  if (code === undefined || semester === undefined) {
     history.push("/");
     return (
       <div>
@@ -20,10 +18,11 @@ const SchoolPage: React.FC<Props> = ({ schools }) => {
       </div>
     );
   } else {
+    const school = schools[code];
     return (
       <div>
-        <h2> {getOrKey(school, schools)}</h2>
-        <SchoolSubjectsList school={school} semester={semester} />
+        <h2> {school.name || code}</h2>
+        <SchoolSubjectsList code={code} school={school} semester={semester} />
       </div>
     );
   }

@@ -27,3 +27,13 @@ export enum LoadingState {
   Success,
   Failed
 }
+
+export interface ISubject {
+  name: string;
+}
+
+export interface ISchool {
+  name: string;
+  code: string;
+  subjects: { [s: string]: ISubject };
+}

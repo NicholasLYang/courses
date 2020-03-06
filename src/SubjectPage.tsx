@@ -10,9 +10,9 @@ import { SubjectCourseList } from "./SubjectCourseList";
 const styles = {
   SubjectPage: {
     display: "flex",
-    flexDirection: "column" as "column"
+    flexDirection: "column"
   }
-};
+} as const;
 
 const SubjectPage: React.FC = () => {
   const { code, school, semester } = useParams();
@@ -41,8 +41,8 @@ const SubjectPage: React.FC = () => {
         <SubjectCourseList
           year={year}
           season={season}
-          code={code}
-          school={school}
+          subjectCode={code}
+          schoolCode={school}
         />
       </div>
     );

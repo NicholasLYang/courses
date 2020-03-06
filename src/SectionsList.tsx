@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
 import React from "react";
 import Section from "./Section";
 import { ISection } from "./types";
@@ -8,7 +10,7 @@ interface Props {
 
 const SectionsList: React.FC<Props> = ({ sections }) => {
   return (
-    <ul>
+    <div>
       {sections.map(
         ({
           type,
@@ -17,9 +19,11 @@ const SectionsList: React.FC<Props> = ({ sections }) => {
           meetings,
           recitations,
           location,
-          sectionName
+          sectionName,
+          sectionCode
         }) => (
           <Section
+            key={sectionCode}
             type={type}
             instructors={instructors}
             status={status}
@@ -30,7 +34,7 @@ const SectionsList: React.FC<Props> = ({ sections }) => {
           />
         )
       )}
-    </ul>
+    </div>
   );
 };
 

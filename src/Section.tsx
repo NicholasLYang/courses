@@ -36,6 +36,29 @@ function getStatusName(status: string): string {
   return status;
 }
 
+const styles = {
+  Section: { display: "flex", flexDirection: "column" },
+  row: {
+    display: "flex",
+    maxWidth: "50vw",
+    justifyContent: "space-evenly",
+    flexWrap: "wrap",
+    padding: "10px",
+    "@media(max-width: 1000px)": {
+      maxWidth: "70vw"
+    },
+    "@media(max-width: 700px)": {
+      flexDirection: "column",
+      paddingLeft: "30px"
+    }
+  },
+  status: (status: string) => ({
+    padding: "10px",
+    width: "40px",
+    color: getStatusColor(status)
+  })
+} as const;
+
 const Section: React.FC<Props> = ({
   recitations,
   instructors,
@@ -57,31 +80,37 @@ const Section: React.FC<Props> = ({
     );
   });
   return (
-    <div css={{ display: "flex", flexDirection: "column" }}>
-      <div
-        css={{
-          display: "flex",
-          maxWidth: "50vw",
-          justifyContent: "space-evenly",
-          flexWrap: "wrap",
-          padding: "10px",
-          "@media(max-width: 700px)": {
-            flexDirection: "column"
-          }
-        }}
-      >
-        <div css={{ color: getStatusColor(status) }}>
-          {getStatusName(status)}{" "}
-        </div>
-        <div css={{ width: "15%" }}>{sectionName}</div>
-        <div css={{ display: "flex", width: "15%", flexDirection: "column" }}>
+    <div css={styles.Section}>
+      <div css={styles.row}>
+        <div css={styles.status(status)}>{getStatusName(status)} </div>
+        {sectionName && <div css={{ width: "100px" }}>{sectionName}</div>}
+        <div
+          css={{
+            display: "flex",
+            width: "100px",
+            flexDirection: "column",
+            padding: "5px"
+          }}
+        >
           {instructors.map(i => (
-            <div> {i} </div>
+            <div key={i}> {i} </div>
           ))}
         </div>
-        <div css={{ width: "20%" }}> {fixLocation(location)} </div>
-        <div>{meetingDays.join("\t")} </div>
-        <div css={{ display: "flex", flexDirection: "column" }}>
+        <div css={{ width: "200px", padding: "5px" }}>
+          {" "}
+          {fixLocation(location)}{" "}
+        </div>
+        <div css={{ width: "50px", padding: "5px" }}>
+          {meetingDays.join("\t")}{" "}
+        </div>
+        <div
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            width: "40px",
+            padding: "5px"
+          }}
+        >
           {meetingTimes.map(time => (
             <div key={time}> {time} </div>
           ))}

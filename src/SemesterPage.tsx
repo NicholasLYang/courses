@@ -1,19 +1,18 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { Link, useParams } from "react-router-dom";
+import { RootState } from "./duck";
+import { useSelector } from "react-redux";
+import React from "react";
 
-interface Props {
-  schools: { [s: string]: string };
-}
-
-const SemesterPage: React.FC<Props> = ({ schools }) => {
+const SemesterPage: React.FC = () => {
   const { semester } = useParams();
+  const schools = useSelector((state: RootState) => state.core.schools);
   return (
     <ul css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}>
-      {Object.entries(schools).map(([code, name]) => (
+      {Object.entries(schools).map(([code, school]) => (
         <Link key={code} to={`/${semester}/${code}`}>
-          {" "}
-          {name}{" "}
+          {school.name}
         </Link>
       ))}
     </ul>

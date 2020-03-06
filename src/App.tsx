@@ -1,19 +1,14 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { API_URL } from "./constants";
+import { useDispatch, useSelector } from "react-redux";
 import { LoadingState } from "./types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import SubjectPage from "./SubjectPage";
 import HomePage from "./HomePage";
 import SchoolPage from "./SchoolPage";
-import { delay } from "./utils";
 import SemesterPage from "./SemesterPage";
-
-export interface School {
-  code: string;
-  name: string;
-}
+import { getSchools, RootState } from "./duck";
 
 const styles = {
   App: {
@@ -29,32 +24,18 @@ const styles = {
 } as const;
 
 const App: React.FC = () => {
-  const [loadingState, setLoadingState] = useState(LoadingState.Loading);
-  const [schools, setSchools] = useState<{ [s: string]: string }>({});
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const error = useSelector((state: RootState) => state.core.error);
   useEffect(() => {
-    (async () => {
-      try {
-        // Just to mess with Albert
-        await delay(500 + Math.random() * 500);
-        const res = await fetch(`${API_URL}/schools`);
-        const payload = await res.json();
-        const schools: { [s: string]: string } = {};
-        for (const school of payload) {
-          schools[school.code] = school.name;
-        }
-        setSchools(schools);
-        setLoadingState(LoadingState.Success);
-      } catch (err) {
-        setLoadingState(LoadingState.Failed);
-        setError(`Error fetching subjects: ${err}`);
-      }
-    })();
-  }, []);
+    dispatch(getSchools());
+  }, [dispatch]);
+  const loadingState = useSelector(
+    (state: RootState) => state.core.loadingState
+  );
   if (loadingState === LoadingState.Loading) {
     return (
       <div css={{ ...styles.App, height: "100vh", justifyContent: "center" }}>
-        <h2> Loading...</h2>;
+        <h2> Loading...</h2>
       </div>
     );
   }
@@ -74,21 +55,21 @@ const App: React.FC = () => {
           }}
           to="/"
         >
-          <h1> Schedge </h1>
+          <h1> Courses </h1>
         </Link>
         <div css={styles.content}>
           <Switch>
             <Route exact path="/">
-              <HomePage schools={schools} />
+              <HomePage />
             </Route>
             <Route path="/:semester">
               <Switch>
                 <Route exact path="/:semester">
                   {" "}
-                  <SemesterPage schools={schools} />
+                  <SemesterPage />
                 </Route>
                 <Route exact path="/:semester/:school">
-                  <SchoolPage schools={schools} />
+                  <SchoolPage />
                 </Route>
                 <Route path="/:semester/:school/:code">
                   <SubjectPage />

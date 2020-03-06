@@ -16,13 +16,16 @@ const styles = {
   Course: {
     fontSize: "1.2rem",
     display: "flex",
-    flexDirection: "column" as "column"
+    flexDirection: "column"
   },
   row: {
     display: "flex",
     padding: "10px",
-    width: "50vw",
+    maxWidth: "50vw",
     transition: "0.1s background-color",
+    "@media(max-width: 1000px)": {
+      maxWidth: "70vw"
+    },
     "&:hover": {
       backgroundColor: "#b9b9b9"
     }
@@ -31,13 +34,13 @@ const styles = {
     width: "10%",
     minWidth: "50px",
     display: "flex",
-    flexDirection: "column" as "column",
+    flexDirection: "column",
     alignItems: "center"
   },
   name: {
     width: "70%"
   }
-};
+} as const;
 
 const Course: React.FC<Props> = ({ name, deptCourseId, sections }) => {
   const [showSections, setShowSections] = useState(false);

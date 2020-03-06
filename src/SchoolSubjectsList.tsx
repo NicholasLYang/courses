@@ -1,60 +1,42 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { delay, getOrKey } from "./utils";
-import { API_URL, subjectNames } from "./constants";
-import { LoadingState } from "./types";
-
-interface Subject {
-  school: string;
-  subject: string;
-}
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ISchool, LoadingState } from "./types";
+import { useDispatch, useSelector } from "react-redux";
+import { getSubjects, RootState } from "./duck";
 
 interface Props {
-  school: string;
+  code: string;
+  school: ISchool;
   semester: string;
 }
 
-const SchoolSubjectsList: React.FC<Props> = ({ school, semester }) => {
-  const [loadingState, setLoadingState] = useState(LoadingState.Loading);
-  const [subjects, setSubjects] = useState<Array<Subject>>([]);
-  const [error, setError] = useState("");
-  const history = useHistory();
+const SchoolSubjectsList: React.FC<Props> = ({ code, school, semester }) => {
+  const dispatch = useDispatch();
+  const loadingState = useSelector(
+    (state: RootState) => state.core.loadingState
+  );
   useEffect(() => {
-    (async () => {
-      try {
-        // Hehe
-        await delay(500 + Math.random() * 500);
-        const res = await fetch(`${API_URL}/subjects?school=${school}`);
-        const payload = await res.json();
-        setSubjects(payload);
-        setLoadingState(LoadingState.Success);
-      } catch (err) {
-        setLoadingState(LoadingState.Failed);
-        setError(`Error fetching subjects: ${err}`);
-      }
-    })();
-  }, [school]);
+    dispatch(getSubjects(code));
+  }, [dispatch, code]);
+  const error = useSelector((state: RootState) => state.core.error);
   if (loadingState === LoadingState.Loading) {
     return <h2> Loading...</h2>;
   }
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  if (!Array.isArray(subjects)) {
-    history.push("/");
-    return <div> Server Error </div>;
-  }
+  const subjects = Object.entries(school.subjects);
   return (
     <div
       css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
     >
       {subjects
-        .sort((a, b) => a.subject.localeCompare(b.subject))
-        .map(({ subject, school }) => (
-          <Link key={subject} to={`/${semester}/${school}/${subject}`}>
-            {getOrKey(subject.toLowerCase(), subjectNames)}
+        .sort((a, b) => a[1].name.localeCompare(b[1].name))
+        .map(([subject, { name }]) => (
+          <Link key={subject} to={`/${semester}/${school.code}/${subject}`}>
+            {name}
           </Link>
         ))}
     </div>

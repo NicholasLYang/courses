@@ -2,11 +2,7 @@
 import { jsx } from "@emotion/core";
 import { Link } from "react-router-dom";
 
-interface Props {
-  schools: { [s: string]: string };
-}
-
-const HomePage: React.FC<Props> = () => {
+const HomePage: React.FC = () => {
   return (
     <div
       css={{
