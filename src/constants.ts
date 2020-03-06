@@ -18,6 +18,7 @@ export const statusMap: { [s: string]: string } = {
 
 export const subjectNames = {
   csci: "Computer Science",
+  colu: "Columbia Language Exchange",
   math: "Math",
   core: "College Core Curriculum",
   engl: "English",

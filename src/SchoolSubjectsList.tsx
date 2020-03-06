@@ -2,8 +2,6 @@
 import { jsx } from "@emotion/core";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getOrKey } from "./utils";
-import { subjectNames } from "./constants";
 import { ISchool, LoadingState } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubjects, RootState } from "./duck";
@@ -36,9 +34,9 @@ const SchoolSubjectsList: React.FC<Props> = ({ code, school, semester }) => {
     >
       {subjects
         .sort((a, b) => a[1].name.localeCompare(b[1].name))
-        .map(([subject]) => (
+        .map(([subject, { name }]) => (
           <Link key={subject} to={`/${semester}/${school.code}/${subject}`}>
-            {getOrKey(subject.toLowerCase(), subjectNames)}
+            {name}
           </Link>
         ))}
     </div>

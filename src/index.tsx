@@ -7,7 +7,6 @@ import store from "./duck";
 
 const render = () => {
   const App = require("./App").default;
-
   ReactDOM.render(
     <Provider store={store}>
       <App />

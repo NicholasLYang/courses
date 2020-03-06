@@ -9,7 +9,9 @@ export const delay = (time: number) =>
   new Promise(resolve => setTimeout(resolve, time));
 
 export function fixLocation(location: string): string {
-  return location.replace("Room:", "Room: ");
+  return location
+    .replace("Room:", "Room: ")
+    .replace("Bldg:COLU", "Columbia University");
 }
 
 export function parseSemester(
