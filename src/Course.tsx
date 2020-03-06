@@ -10,6 +10,7 @@ interface Props {
   name: string;
   deptCourseId: string;
   sections: Array<ISection>;
+  isOdd: boolean;
 }
 
 const styles = {
@@ -18,7 +19,7 @@ const styles = {
     display: "flex",
     flexDirection: "column"
   },
-  row: {
+  row: (isOdd: boolean) => ({
     display: "flex",
     padding: "10px",
     maxWidth: "50vw",
@@ -26,10 +27,11 @@ const styles = {
     "@media(max-width: 1000px)": {
       maxWidth: "70vw"
     },
+    backgroundColor: isOdd ? "#dfdfdf" : "white",
     "&:hover": {
-      backgroundColor: "#b9b9b9"
+      backgroundColor: "rgba(137,0,225,0.45)"
     }
-  },
+  }),
   id: {
     width: "10%",
     minWidth: "50px",
@@ -42,11 +44,14 @@ const styles = {
   }
 } as const;
 
-const Course: React.FC<Props> = ({ name, deptCourseId, sections }) => {
+const Course: React.FC<Props> = ({ name, deptCourseId, sections, isOdd }) => {
   const [showSections, setShowSections] = useState(false);
   return (
     <div key={name} css={styles.Course}>
-      <div css={styles.row} onClick={() => setShowSections(!showSections)}>
+      <div
+        css={styles.row(isOdd)}
+        onClick={() => setShowSections(!showSections)}
+      >
         <div css={styles.id}>{deptCourseId}</div>
         <div css={styles.name}>
           {name in weirdCourseNames ? weirdCourseNames[name] : name}

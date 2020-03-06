@@ -9,13 +9,18 @@ const SemesterPage: React.FC = () => {
   const { semester } = useParams();
   const schools = useSelector((state: RootState) => state.core.schools);
   return (
-    <ul css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}>
-      {Object.entries(schools).map(([code, school]) => (
-        <Link key={code} to={`/${semester}/${code}`}>
-          {school.name}
-        </Link>
-      ))}
-    </ul>
+    <div>
+      <Link to="/"> &#8592; Switch semester</Link>
+      <ul
+        css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
+      >
+        {Object.entries(schools).map(([code, school]) => (
+          <Link key={code} to={`/${semester}/${code}`}>
+            {school.name}
+          </Link>
+        ))}
+      </ul>
+    </div>
   );
 };
 

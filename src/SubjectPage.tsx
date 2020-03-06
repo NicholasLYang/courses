@@ -34,10 +34,11 @@ const SubjectPage: React.FC = () => {
     const { year, season } = res!;
     return (
       <div css={styles.SubjectPage}>
+        <Link to={`/${semester}/${school}`}> &#8592; Switch subject </Link>
         <h2> {getOrKey(code!.toLowerCase(), subjectNames)} </h2>
         <header>
           <h3> Courses </h3>
-        </header>{" "}
+        </header>
         <SubjectCourseList
           year={year}
           season={season}

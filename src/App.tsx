@@ -45,24 +45,24 @@ const App: React.FC = () => {
   return (
     <div css={styles.App}>
       <Router>
-        <Link
-          css={{
-            textDecoration: "none",
-            color: "black",
-            "&:hover": {
-              textDecoration: "underline"
-            }
-          }}
-          to="/"
-        >
-          <h1> Courses </h1>
-        </Link>
         <div css={styles.content}>
           <Switch>
             <Route exact path="/">
               <HomePage />
             </Route>
             <Route path="/:semester">
+              <Link
+                css={{
+                  textDecoration: "none",
+                  color: "black",
+                  "&:hover": {
+                    textDecoration: "underline"
+                  }
+                }}
+                to="/"
+              >
+                <h1> Courses </h1>
+              </Link>
               <Switch>
                 <Route exact path="/:semester">
                   {" "}

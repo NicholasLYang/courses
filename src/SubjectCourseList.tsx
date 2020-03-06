@@ -43,12 +43,13 @@ export const SubjectCourseList: React.FC<Props> = ({
     <div>
       {subjectCourses
         .sort((a, b) => parseInt(a.deptCourseId) - parseInt(b.deptCourseId))
-        .map((course: ICourse) => (
+        .map((course: ICourse, i) => (
           <Course
             key={course.deptCourseId}
             name={course.name}
             deptCourseId={course.deptCourseId}
             sections={course.sections}
+            isOdd={i % 2 !== 0}
           />
         ))}
     </div>

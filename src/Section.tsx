@@ -37,7 +37,13 @@ function getStatusName(status: string): string {
 }
 
 const styles = {
-  Section: { display: "flex", flexDirection: "column" },
+  Section: {
+    display: "flex",
+    flexDirection: "column",
+    "&:nth-child(odd)": {
+      backgroundColor: "#dfdfdf"
+    }
+  },
   row: {
     display: "flex",
     maxWidth: "50vw",

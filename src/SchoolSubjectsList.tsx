@@ -29,16 +29,19 @@ const SchoolSubjectsList: React.FC<Props> = ({ code, school, semester }) => {
   }
   const subjects = Object.entries(school.subjects);
   return (
-    <div
-      css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
-    >
-      {subjects
-        .sort((a, b) => a[1].name.localeCompare(b[1].name))
-        .map(([subject, { name }]) => (
-          <Link key={subject} to={`/${semester}/${school.code}/${subject}`}>
-            {name}
-          </Link>
-        ))}
+    <div>
+      <Link to={`/${semester}`}> &#8592; Switch school</Link>
+      <ul
+        css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
+      >
+        {subjects
+          .sort((a, b) => a[1].name.localeCompare(b[1].name))
+          .map(([subject, { name }]) => (
+            <Link key={subject} to={`/${semester}/${school.code}/${subject}`}>
+              {name}
+            </Link>
+          ))}
+      </ul>
     </div>
   );
 };
