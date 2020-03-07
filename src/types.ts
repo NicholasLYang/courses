@@ -9,6 +9,7 @@ export interface ISection {
   location: string;
   description: string;
   name: string;
+  notes: string;
 }
 
 export interface IMeeting {

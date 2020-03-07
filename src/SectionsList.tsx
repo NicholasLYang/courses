@@ -21,7 +21,8 @@ const SectionsList: React.FC<Props> = ({ sections }) => {
           location,
           name,
           sectionCode,
-          description
+          description,
+          notes
         }) => (
           <Section
             key={sectionCode}
@@ -32,6 +33,7 @@ const SectionsList: React.FC<Props> = ({ sections }) => {
             description={description}
             location={location}
             name={name}
+            notes={notes}
           />
         )
       )}

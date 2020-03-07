@@ -14,6 +14,7 @@ interface Props {
   description: string;
   location: string;
   name: string;
+  notes: string;
 }
 
 function getStatusColor(status: string): string {
@@ -74,7 +75,8 @@ const Section: React.FC<Props> = ({
   status,
   meetings,
   location,
-  name
+  name,
+  notes
 }) => {
   const [showDescription, setShowDescription] = useState(false);
   const meetingDateTimes = [];
@@ -136,9 +138,12 @@ const Section: React.FC<Props> = ({
         </div>
       </div>
       {showDescription && (
-        <div css={{ padding: "20px", backgroundColor: "white" }}>
-          {description}{" "}
-        </div>
+        <React.Fragment>
+          <div css={{ padding: "20px", backgroundColor: "white" }}>
+            {description}
+          </div>
+          <div css={{ padding: "20px", backgroundColor: "white" }}>{notes}</div>
+        </React.Fragment>
       )}
     </div>
   );

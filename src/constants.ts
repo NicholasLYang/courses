@@ -9,7 +9,8 @@ export const weirdCourseNames: { [s: string]: string } = {
   "Quantitative Reasoning: Prob,Stats & Decisn-Mkng":
     "Quantitative Reasoning: Probability, Statistics & Decision-Making",
   "Expressive Culture: Tpcs": "Expressive Culture: Topics",
-  "Expressive Cult: Images": "Expressive Culture: Images"
+  "Expressive Cult: Images": "Expressive Culture: Images",
+  "Honors Analy of Algo": "Honors Analysis of Algorithms"
 };
 
 export const weirdSubjectNames: { [s: string]: string } = {
