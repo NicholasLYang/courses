@@ -41,10 +41,10 @@ const HomePage: React.FC = () => {
         <h1> Courses </h1>
       </div>
       <div css={styles.links}>
-        <Link css={styles.link("#809848")} to={`/spring20`}>
+        <Link css={styles.link("#809848")} to={`/2020/sp`}>
           <h2> Spring 2020</h2>
         </Link>
-        <Link css={styles.link("#e08e45")} to={`/fall20`}>
+        <Link css={styles.link("#e08e45")} to={`/2020/fa`}>
           <h2>Fall 2020</h2>
         </Link>
       </div>

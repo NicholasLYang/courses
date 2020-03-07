@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "development" && module.hot) {
 interface CoreState {
   loadingState: LoadingState;
   schools: { [s: string]: ISchool };
-  courses: { [s: string]: ICourse[] };
+  courses: { [s: string]: { [code: string]: ICourse } };
   error: string | undefined;
 }
 
@@ -39,7 +39,7 @@ interface GetSubjectPayload {
 }
 
 interface GetCoursesPayload {
-  courses: ICourse[];
+  courses: { [s: string]: ICourse };
   year: string;
   season: string;
   schoolCode: string;
@@ -119,10 +119,14 @@ export const getSchools = (): AppThunk => async (dispatch, getState) => {
   }
 };
 
-export const getSubjects = (code: string): AppThunk => async (
+export const getSubjects = (code: string | undefined): AppThunk => async (
   dispatch,
   getState
 ) => {
+  if (code === undefined) {
+    dispatch(getSubjectsFailure("Did not provide valid school code"));
+    return;
+  }
   const {
     core: { schools }
   } = getState();
@@ -159,7 +163,11 @@ export const getCourses = (
       const res = await fetch(
         `${API_URL}/${year}/${season}/${schoolCode}/${subjectCode}`
       );
-      const courses = await res.json();
+      const requestPayload = await res.json();
+      const courses: { [s: string]: ICourse } = {};
+      for (const course of requestPayload) {
+        courses[course.deptCourseId] = course;
+      }
       const payload = { subjectCode, schoolCode, year, season, courses };
       dispatch(getCoursesSuccess(payload));
     } catch (err) {

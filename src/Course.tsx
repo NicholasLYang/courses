@@ -5,8 +5,13 @@ import React, { useState } from "react";
 import { weirdCourseNames } from "./constants";
 import SectionsList from "./SectionsList";
 import { ISection } from "./types";
+import { getOrKey } from "./utils";
 
 interface Props {
+  year: string;
+  season: string;
+  schoolCode: string;
+  subjectCode: string;
   name: string;
   deptCourseId: string;
   sections: Array<ISection>;
@@ -44,18 +49,29 @@ const styles = {
   }
 } as const;
 
-const Course: React.FC<Props> = ({ name, deptCourseId, sections, isOdd }) => {
+const Course: React.FC<Props> = ({
+  year,
+  season,
+  schoolCode,
+  subjectCode,
+  name,
+  deptCourseId,
+  sections,
+  isOdd
+}) => {
   const [showSections, setShowSections] = useState(false);
   return (
-    <div key={name} css={styles.Course}>
+    <div
+      //to={`/${year}/${season}/${schoolCode}/${subjectCode}/${deptCourseId}`}
+      key={name}
+      css={styles.Course}
+    >
       <div
         css={styles.row(isOdd)}
         onClick={() => setShowSections(!showSections)}
       >
         <div css={styles.id}>{deptCourseId}</div>
-        <div css={styles.name}>
-          {name in weirdCourseNames ? weirdCourseNames[name] : name}
-        </div>
+        <div css={styles.name}>{getOrKey(name, weirdCourseNames)}</div>
       </div>
       {showSections && <SectionsList sections={sections} />}
     </div>

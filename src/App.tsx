@@ -9,6 +9,7 @@ import HomePage from "./HomePage";
 import SchoolPage from "./SchoolPage";
 import SemesterPage from "./SemesterPage";
 import { getSchools, RootState } from "./duck";
+import CoursePage from "./CoursePage";
 
 const styles = {
   App: {
@@ -64,15 +65,17 @@ const App: React.FC = () => {
                 <h1> Courses </h1>
               </Link>
               <Switch>
-                <Route exact path="/:semester">
-                  {" "}
+                <Route exact path="/:year/:season">
                   <SemesterPage />
                 </Route>
-                <Route exact path="/:semester/:school">
+                <Route exact path="/:year/:season/:schoolCode">
                   <SchoolPage />
                 </Route>
-                <Route path="/:semester/:school/:code">
+                <Route exact path="/:year/:season/:schoolCode/:subjectCode">
                   <SubjectPage />
+                </Route>
+                <Route path="/:year/:season/:schoolCode/:subjectCode/:courseCode">
+                  <CoursePage />
                 </Route>
               </Switch>
             </Route>

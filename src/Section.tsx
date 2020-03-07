@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import { statusMap } from "./constants";
-import { IMeeting, ISection } from "./types";
+import { IMeeting } from "./types";
 import { fixLocation } from "./utils";
 
 interface Props {
@@ -11,9 +11,9 @@ interface Props {
   instructors: Array<string>;
   status: string;
   meetings: Array<IMeeting>;
-  recitations: null | Array<ISection>;
+  description: string;
   location: string;
-  sectionName: string;
+  name: string;
 }
 
 function getStatusColor(status: string): string {
@@ -46,33 +46,37 @@ const styles = {
   },
   row: {
     display: "flex",
-    maxWidth: "50vw",
     justifyContent: "space-evenly",
     flexWrap: "wrap",
+    wordWrap: "break-word",
     padding: "10px",
-    "@media(max-width: 1000px)": {
-      maxWidth: "70vw"
-    },
+    transition: "0.1s background-color",
     "@media(max-width: 700px)": {
       flexDirection: "column",
       paddingLeft: "30px"
+    },
+    "&:hover": {
+      backgroundColor: "rgba(137,0,225,0.45)"
     }
   },
   status: (status: string) => ({
     padding: "10px",
-    width: "40px",
+    width: "80px",
+    display: "flex",
+    justifyContent: "center",
     color: getStatusColor(status)
   })
 } as const;
 
 const Section: React.FC<Props> = ({
-  recitations,
+  description,
   instructors,
   status,
   meetings,
   location,
-  sectionName
+  name
 }) => {
+  const [showDescription, setShowDescription] = useState(false);
   const meetingDateTimes = [];
   const meetingDays: string[] = [];
   const meetingTimes: string[] = [];
@@ -87,13 +91,22 @@ const Section: React.FC<Props> = ({
   });
   return (
     <div css={styles.Section}>
-      <div css={styles.row}>
+      <div
+        css={styles.row}
+        onClick={() => setShowDescription(!showDescription)}
+      >
         <div css={styles.status(status)}>{getStatusName(status)} </div>
-        {sectionName && <div css={{ width: "100px" }}>{sectionName}</div>}
+        {name && (
+          <div
+            css={{ width: "100px", display: "flex", justifyContent: "center" }}
+          >
+            {name}
+          </div>
+        )}
         <div
           css={{
             display: "flex",
-            width: "100px",
+            width: "120px",
             flexDirection: "column",
             padding: "5px"
           }}
@@ -113,8 +126,8 @@ const Section: React.FC<Props> = ({
           css={{
             display: "flex",
             flexDirection: "column",
-            width: "40px",
-            padding: "5px"
+            width: "100px",
+            padding: "10px"
           }}
         >
           {meetingTimes.map(time => (
@@ -122,18 +135,10 @@ const Section: React.FC<Props> = ({
           ))}
         </div>
       </div>
-      {recitations && (
-        <ul
-          css={{
-            marginLeft: "40px",
-            backgroundColor: "#d9d9d9",
-            width: "50vw"
-          }}
-        >
-          {recitations.map(r => (
-            <Section {...r} />
-          ))}
-        </ul>
+      {showDescription && (
+        <div css={{ padding: "20px", backgroundColor: "white" }}>
+          {description}{" "}
+        </div>
       )}
     </div>
   );

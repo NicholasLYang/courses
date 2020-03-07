@@ -19,8 +19,9 @@ const SectionsList: React.FC<Props> = ({ sections }) => {
           meetings,
           recitations,
           location,
-          sectionName,
-          sectionCode
+          name,
+          sectionCode,
+          description
         }) => (
           <Section
             key={sectionCode}
@@ -28,9 +29,9 @@ const SectionsList: React.FC<Props> = ({ sections }) => {
             instructors={instructors}
             status={status}
             meetings={meetings}
-            recitations={recitations}
+            description={description}
             location={location}
-            sectionName={sectionName}
+            name={name}
           />
         )
       )}

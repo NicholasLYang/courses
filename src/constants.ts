@@ -12,6 +12,13 @@ export const weirdCourseNames: { [s: string]: string } = {
   "Expressive Cult: Images": "Expressive Culture: Images"
 };
 
+export const weirdSubjectNames: { [s: string]: string } = {
+  "Child/Adoles Mental Hlth Stds": "Child/Adolescent Mental Health Studies",
+  "European and Mediterranean Stu": "European and Mediterranean Studies",
+  "Latin Amer-Caribbean Studies": "Latin American-Caribbean Studies",
+  "Ctr for Art, Society & Pub Pol": "Center for Art, Society & Public Policy"
+};
+
 export const statusMap: { [s: string]: string } = {
   WaitList: "Wait List"
 };

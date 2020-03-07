@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 
 const SemesterPage: React.FC = () => {
-  const { semester } = useParams();
+  const { year, season } = useParams();
   const schools = useSelector((state: RootState) => state.core.schools);
   return (
     <div>
@@ -15,7 +15,7 @@ const SemesterPage: React.FC = () => {
         css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
       >
         {Object.entries(schools).map(([code, school]) => (
-          <Link key={code} to={`/${semester}/${code}`}>
+          <Link key={code} to={`/${year}/${season}/${code}`}>
             {school.name}
           </Link>
         ))}

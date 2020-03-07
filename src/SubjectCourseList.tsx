@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/core";
 
 import React, { useEffect } from "react";
-import { ICourse, LoadingState } from "./types";
+import { LoadingState } from "./types";
 import Course from "./Course";
 import { useDispatch, useSelector } from "react-redux";
 import { getCourses, RootState } from "./duck";
@@ -38,14 +38,20 @@ export const SubjectCourseList: React.FC<Props> = ({
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  const subjectCourses = [...courses];
+  const subjectCourses = Object.entries(courses);
   return (
     <div>
       {subjectCourses
-        .sort((a, b) => parseInt(a.deptCourseId) - parseInt(b.deptCourseId))
-        .map((course: ICourse, i) => (
+        .sort(
+          (a, b) => parseInt(a[1].deptCourseId) - parseInt(b[1].deptCourseId)
+        )
+        .map(([code, course], i) => (
           <Course
-            key={course.deptCourseId}
+            year={year}
+            season={season}
+            schoolCode={schoolCode}
+            subjectCode={subjectCode}
+            key={code}
             name={course.name}
             deptCourseId={course.deptCourseId}
             sections={course.sections}

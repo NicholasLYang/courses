@@ -6,11 +6,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "./duck";
 
 const SchoolPage: React.FC = () => {
-  const { school: code, semester } = useParams();
+  const { schoolCode, year, season } = useParams();
   const schools = useSelector((state: RootState) => state.core.schools);
   const history = useHistory();
 
-  if (code === undefined || semester === undefined) {
+  if (schoolCode === undefined || year === undefined || season === undefined) {
     history.push("/");
     return (
       <div>
@@ -18,11 +18,11 @@ const SchoolPage: React.FC = () => {
       </div>
     );
   } else {
-    const school = schools[code];
+    const school = schools[schoolCode];
     return (
       <div>
-        <h2> {school.name || code}</h2>
-        <SchoolSubjectsList code={code} school={school} semester={semester} />
+        <h2> {school.name || schoolCode}</h2>
+        <SchoolSubjectsList school={school} year={year} season={season} />
       </div>
     );
   }
