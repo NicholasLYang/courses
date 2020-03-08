@@ -3,7 +3,7 @@ import { jsx } from "@emotion/core";
 import moment from "moment";
 import React, { useState } from "react";
 import { statusMap } from "./constants";
-import { IMeeting } from "./types";
+import { IMeeting, ISection } from "./types";
 import { fixLocation } from "./utils";
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
   location: string;
   name: string;
   notes: string;
+  recitations: Array<ISection> | null;
 }
 
 function getStatusColor(status: string): string {
@@ -100,7 +101,12 @@ const Section: React.FC<Props> = ({
         <div css={styles.status(status)}>{getStatusName(status)} </div>
         {name && (
           <div
-            css={{ width: "100px", display: "flex", justifyContent: "center" }}
+            css={{
+              width: "100px",
+              padding: "5px",
+              display: "flex",
+              justifyContent: "center"
+            }}
           >
             {name}
           </div>
@@ -117,7 +123,7 @@ const Section: React.FC<Props> = ({
             <div key={i}> {i} </div>
           ))}
         </div>
-        <div css={{ width: "200px", padding: "5px" }}>
+        <div css={{ width: "200px", maxWidth: "50vw", padding: "5px" }}>
           {" "}
           {fixLocation(location)}{" "}
         </div>
@@ -129,7 +135,7 @@ const Section: React.FC<Props> = ({
             display: "flex",
             flexDirection: "column",
             width: "100px",
-            padding: "10px"
+            padding: "5px"
           }}
         >
           {meetingTimes.map(time => (

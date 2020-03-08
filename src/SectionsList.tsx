@@ -10,7 +10,7 @@ interface Props {
 
 const SectionsList: React.FC<Props> = ({ sections }) => {
   return (
-    <div css={{ padding: "20px" }}>
+    <div css={{ padding: "20px 0px 20px 0px" }}>
       {sections.map(
         ({
           type,
@@ -34,6 +34,7 @@ const SectionsList: React.FC<Props> = ({ sections }) => {
             location={location}
             name={name}
             notes={notes}
+            recitations={recitations}
           />
         )
       )}
