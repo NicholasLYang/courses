@@ -14,9 +14,9 @@ const SemesterPage: React.FC = () => {
       <ul
         css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
       >
-        {Object.entries(schools).map(([code, school]) => (
+        {Object.entries(schools).map(([code, name]) => (
           <Link key={code} to={`/${year}/${season}/${code}`}>
-            {school.name}
+            {name}
           </Link>
         ))}
       </ul>

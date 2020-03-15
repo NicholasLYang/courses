@@ -37,5 +37,4 @@ export interface ISubject {
 export interface ISchool {
   name: string;
   code: string;
-  subjects: { [s: string]: ISubject };
 }

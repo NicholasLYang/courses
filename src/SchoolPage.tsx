@@ -21,8 +21,12 @@ const SchoolPage: React.FC = () => {
     const school = schools[schoolCode];
     return (
       <div>
-        <h2> {school.name || schoolCode}</h2>
-        <SchoolSubjectsList school={school} year={year} season={season} />
+        <h2> {school || schoolCode}</h2>
+        <SchoolSubjectsList
+          schoolCode={schoolCode}
+          year={year}
+          season={season}
+        />
       </div>
     );
   }

@@ -21,8 +21,9 @@ if (process.env.NODE_ENV === "development" && module.hot) {
 
 interface CoreState {
   loadingState: LoadingState;
-  schools: { [s: string]: ISchool };
+  schools: { [s: string]: string };
   courses: { [s: string]: { [code: string]: ICourse } };
+  subjects: { [s: string]: { [s: string]: string } };
   error: string | undefined;
 }
 
@@ -30,11 +31,12 @@ const initialState: CoreState = {
   loadingState: LoadingState.Loading,
   schools: {},
   courses: {},
+  subjects: {},
   error: undefined
 };
 
 interface GetSubjectPayload {
-  subjects: { [s: string]: ISubject };
+  subjects: { [schoolCode: string]: { [subjectCode: string]: string } };
   code: string;
 }
 
@@ -50,7 +52,7 @@ const coreSlice = createSlice({
   name: "core",
   initialState,
   reducers: {
-    getSchoolsSuccess(state, action: PayloadAction<{ [s: string]: ISchool }>) {
+    getSchoolsSuccess(state, action: PayloadAction<{ [s: string]: string }>) {
       state.loadingState = LoadingState.Success;
       state.schools = action.payload;
     },
@@ -58,7 +60,7 @@ const coreSlice = createSlice({
       state.error = action.payload;
     },
     getSubjectsSuccess(state, action: PayloadAction<GetSubjectPayload>) {
-      state.schools[action.payload.code].subjects = action.payload.subjects;
+      state.subjects = action.payload.subjects;
       state.loadingState = LoadingState.Success;
     },
     getSubjectsFailure(state, action: PayloadAction<string>) {
@@ -101,15 +103,7 @@ export const getSchools = (): AppThunk => async (dispatch, getState) => {
   if (Object.entries(schools).length === 0) {
     try {
       const res = await fetch(`${API_URL}/schools`);
-      const payload = await res.json();
-      const schools: { [s: string]: ISchool } = {};
-      for (const school of payload) {
-        schools[school.code] = {
-          name: school.name,
-          code: school.code,
-          subjects: {}
-        };
-      }
+      const schools = await res.json();
       dispatch(getSchoolsSuccess(schools));
     } catch (e) {
       dispatch(getSchoolsFailure(e.toString()));
@@ -128,17 +122,13 @@ export const getSubjects = (code: string | undefined): AppThunk => async (
     return;
   }
   const {
-    core: { schools }
+    core: { subjects }
   } = getState();
-  if (Object.entries(schools[code].subjects).length === 0) {
+  if (!(code in subjects)) {
     try {
       dispatch(startLoading());
       const res = await fetch(`${API_URL}/subjects?school=${code}`);
-      const payload = await res.json();
-      const subjects: { [s: string]: ISubject } = {};
-      for (const subject of payload) {
-        subjects[subject.code] = { name: subject.name };
-      }
+      const subjects = await res.json();
       dispatch(getSubjectsSuccess({ subjects, code }));
     } catch (err) {
       dispatch(getSubjectsFailure(err.toString()));
