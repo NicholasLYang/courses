@@ -1,4 +1,8 @@
-export const API_URL = "https://schedge.torchnyu.com";
+/*
+  Constant for API_URL, course and subject names,
+  handling odd data
+*/
+export const API_URL = "https://schedge.a1liu.com";
 
 export const weirdCourseNames: { [s: string]: string } = {
   "Intro to Computer SCI": "Intro to Computer Science",

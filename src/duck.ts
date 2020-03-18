@@ -1,3 +1,6 @@
+/*
+Assigning types to values
+*/
 import {
   configureStore,
   combineReducers,
