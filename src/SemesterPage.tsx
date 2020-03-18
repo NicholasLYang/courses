@@ -12,11 +12,6 @@ import React from "react";
 const SemesterPage: React.FC = () => {
   const { year, season } = useParams();
   const schools = useSelector((state: RootState) => state.core.schools);
-  const test = Object.entries(schools)
-  console.log(test)
-  test.map(([code,name]) => (
-    console.log(JSON.stringify(name).split(":")[1].split("}")[0])
-  ))
   return (
     <div>
       <Link to="/"> &#8592; Switch semester</Link>
@@ -25,7 +20,7 @@ const SemesterPage: React.FC = () => {
       >
         {Object.entries(schools).map(([code, name]) => (
           <Link key={code} to={`/${year}/${season}/${code}`}>
-            {JSON.stringify(name).split(":")[1].split("}")[0].replace(/(['"])/g,'')}
+            {name.name}
           </Link>
         ))}
       </ul>

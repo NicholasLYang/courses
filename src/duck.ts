@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "development" && module.hot) {
 
 interface CoreState {
   loadingState: LoadingState;
-  schools: { [s: string]: string };
+  schools: { [s: string]: {[s: string] : string} };
   courses: { [s: string]: { [code: string]: ICourse } };
   subjects: { [s: string]: { [s: string]: string } };
   error: string | undefined;
@@ -55,7 +55,7 @@ const coreSlice = createSlice({
   name: "core",
   initialState,
   reducers: {
-    getSchoolsSuccess(state, action: PayloadAction<{ [s: string]: string }>) {
+    getSchoolsSuccess(state, action: PayloadAction<{ [s: string]: {[s: string] : string} }>) {
       state.loadingState = LoadingState.Success;
       state.schools = action.payload;
     },
