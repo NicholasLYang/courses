@@ -21,7 +21,7 @@ const SchoolPage: React.FC = () => {
     const school = schools[schoolCode];
     return (
       <div>
-        <h2> {school || schoolCode}</h2>
+        <h2> {school.name || schoolCode}</h2>
         <SchoolSubjectsList
           schoolCode={schoolCode}
           year={year}

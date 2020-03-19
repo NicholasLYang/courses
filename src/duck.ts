@@ -26,7 +26,7 @@ interface CoreState {
   loadingState: LoadingState;
   schools: { [s: string]: {[s: string] : string} };
   courses: { [s: string]: { [code: string]: ICourse } };
-  subjects: { [s: string]: { [s: string]: string } };
+  subjects: { [s: string]: { [s: string]: {[s: string] : string} } };
   error: string | undefined;
 }
 
@@ -39,7 +39,7 @@ const initialState: CoreState = {
 };
 
 interface GetSubjectPayload {
-  subjects: { [schoolCode: string]: { [subjectCode: string]: string } };
+  subjects: { [schoolCode: string]: { [subjectCode: string]: {[s : string] : string} } };
   code: string;
 }
 

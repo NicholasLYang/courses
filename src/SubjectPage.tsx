@@ -50,12 +50,12 @@ const SubjectPage: React.FC = () => {
       </div>
     );
   }
+  console.log("subject")
   return (
     <div css={styles.SubjectPage}>
       <Link to={`/${year}/${season}/${schoolCode}`}>
         &#8592; Switch subject
       </Link>
-      <h2> {getOrKey(subject, weirdSubjectNames)} </h2>
       <header>
         <h3> Courses </h3>
       </header>

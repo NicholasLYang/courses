@@ -32,7 +32,6 @@ const SchoolSubjectsList: React.FC<Props> = ({ schoolCode, year, season }) => {
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  console.log(Object.entries(subjects));
   return (
     <div>
       <Link to={`/${year}/${season}`}> &#8592; Switch school</Link>
@@ -43,7 +42,7 @@ const SchoolSubjectsList: React.FC<Props> = ({ schoolCode, year, season }) => {
           .sort((a, b) => a[0].localeCompare(b[0]))
           .map(([code, name]) => (
             <Link key={code} to={`/${year}/${season}/${schoolCode}/${code}`}>
-              {getOrKey(name, weirdSubjectNames)}
+            {getOrKey(name.name, weirdSubjectNames)}
             </Link>
           ))}
       </ul>
