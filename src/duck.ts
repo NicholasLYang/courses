@@ -6,7 +6,7 @@ import {
   PayloadAction
 } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
-import { ICourse, ISchool, ISubject, LoadingState } from "./types";
+import { ICourse, LoadingState } from "./types";
 import { API_URL } from "./constants";
 
 // Hot Loading setup
@@ -21,9 +21,9 @@ if (process.env.NODE_ENV === "development" && module.hot) {
 
 interface CoreState {
   loadingState: LoadingState;
-  schools: { [s: string]: {[s: string] : string} };
+  schools: { [s: string]: { [s: string]: string } };
   courses: { [s: string]: { [code: string]: ICourse } };
-  subjects: { [s: string]: { [s: string]: {[s: string] : string} } };
+  subjects: { [s: string]: { [s: string]: { [s: string]: string } } };
   error: string | undefined;
 }
 
@@ -36,7 +36,9 @@ const initialState: CoreState = {
 };
 
 interface GetSubjectPayload {
-  subjects: { [schoolCode: string]: { [subjectCode: string]: {[s : string] : string} } };
+  subjects: {
+    [schoolCode: string]: { [subjectCode: string]: { [s: string]: string } };
+  };
   code: string;
 }
 
@@ -52,7 +54,10 @@ const coreSlice = createSlice({
   name: "core",
   initialState,
   reducers: {
-    getSchoolsSuccess(state, action: PayloadAction<{ [s: string]: {[s: string] : string} }>) {
+    getSchoolsSuccess(
+      state,
+      action: PayloadAction<{ [s: string]: { [s: string]: string } }>
+    ) {
       state.loadingState = LoadingState.Success;
       state.schools = action.payload;
     },
@@ -151,7 +156,7 @@ export const getCourses = (
     try {
       dispatch(startLoading());
       const res = await fetch(
-        `${API_URL}/${year}/${season}/${schoolCode}/${subjectCode}`
+        `${API_URL}/${year}/${season}/${schoolCode}/${subjectCode}?full=true`
       );
       const requestPayload = await res.json();
       const courses: { [s: string]: ICourse } = {};

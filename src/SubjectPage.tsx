@@ -29,7 +29,7 @@ const SubjectPage: React.FC = () => {
   );
   const error = useSelector((state: RootState) => state.core.error);
   const subject = useSelector(
-    (state: RootState) => state.core.subjects[schoolCode!][subjectCode!]
+    (state: RootState) => state.core.subjects?.[schoolCode!]?.[subjectCode!]
   );
   if (loadingState === LoadingState.Loading || subject === undefined) {
     return <h2> Loading...</h2>;
@@ -50,12 +50,13 @@ const SubjectPage: React.FC = () => {
       </div>
     );
   }
-  
+
   return (
     <div css={styles.SubjectPage}>
       <Link to={`/${year}/${season}/${schoolCode}`}>
         &#8592; Switch subject
       </Link>
+      <h1> {getOrKey(subject.name, weirdSubjectNames)} </h1>
       <header>
         <h3> Courses </h3>
       </header>
