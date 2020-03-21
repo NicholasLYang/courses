@@ -24,10 +24,6 @@ const styles = {
   }
 } as const;
 
-/*
-  Main function for the application. Making request
-  and setup loading state
-*/
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const error = useSelector((state: RootState) => state.core.error);

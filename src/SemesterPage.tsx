@@ -5,10 +5,6 @@ import { RootState } from "./duck";
 import { useSelector } from "react-redux";
 import React from "react";
 
-/*
-  semester page to allow user to switch between semesters.
-  Making request to the API
-*/
 const SemesterPage: React.FC = () => {
   const { year, season } = useParams();
   const schools = useSelector((state: RootState) => state.core.schools);
@@ -18,9 +14,9 @@ const SemesterPage: React.FC = () => {
       <ul
         css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
       >
-        {Object.entries(schools).map(([code, name]) => (
+        {Object.entries(schools).map(([code, school]) => (
           <Link key={code} to={`/${year}/${season}/${code}`}>
-            {name.name}
+            {school.name}
           </Link>
         ))}
       </ul>

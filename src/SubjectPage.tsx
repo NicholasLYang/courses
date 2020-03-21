@@ -50,7 +50,7 @@ const SubjectPage: React.FC = () => {
       </div>
     );
   }
-  console.log("subject")
+  
   return (
     <div css={styles.SubjectPage}>
       <Link to={`/${year}/${season}/${schoolCode}`}>
