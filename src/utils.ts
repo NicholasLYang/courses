@@ -14,15 +14,20 @@ export function fixLocation(location: string): string {
     .replace("Bldg:COLU", "Columbia University");
 }
 
-export function parseSemester(
-  semester: string
-): { year: string; season: string } {
-  switch (semester) {
-    case "spring20":
-      return { year: "2020", season: "sp" };
-    case "fall20":
-      return { year: "2020", season: "fa" };
-    default:
-      throw Error(`Unexpected semester ${semester}`);
-  }
+const coreClasses = new Set([
+  "csci-ua-101",
+  "csci-ua-102",
+  "csci-ua-201",
+  "csci-ua-202",
+  "csci-ua-310"
+]);
+
+export function findCoreReqs(
+  schoolCode: string,
+  subjectCode: string,
+  deptCourseId: string
+): boolean {
+  return coreClasses.has(
+    `${subjectCode.toLowerCase()}-${schoolCode.toLowerCase()}-${deptCourseId}`
+  );
 }

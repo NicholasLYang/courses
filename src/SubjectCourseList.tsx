@@ -47,8 +47,6 @@ export const SubjectCourseList: React.FC<Props> = ({
         )
         .map(([code, course], i) => (
           <Course
-            year={year}
-            season={season}
             schoolCode={schoolCode}
             subjectCode={subjectCode}
             key={code}

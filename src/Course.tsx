@@ -5,11 +5,9 @@ import React, { useState } from "react";
 import { weirdCourseNames } from "./constants";
 import SectionsList from "./SectionsList";
 import { ISection } from "./types";
-import { getOrKey } from "./utils";
+import { findCoreReqs, getOrKey } from "./utils";
 
 interface Props {
-  year: string;
-  season: string;
   schoolCode: string;
   subjectCode: string;
   name: string;
@@ -44,14 +42,15 @@ const styles = {
     flexDirection: "column",
     alignItems: "center"
   },
+  core: {
+    color: "red"
+  },
   name: {
     width: "70%"
   }
 } as const;
 
 const Course: React.FC<Props> = ({
-  year,
-  season,
   schoolCode,
   subjectCode,
   name,
@@ -59,19 +58,17 @@ const Course: React.FC<Props> = ({
   sections,
   isOdd
 }) => {
+  const isCoreReq = findCoreReqs(schoolCode, subjectCode, deptCourseId);
   const [showSections, setShowSections] = useState(false);
   return (
-    <div
-      //to={`/${year}/${season}/${schoolCode}/${subjectCode}/${deptCourseId}`}
-      key={name}
-      css={styles.Course}
-    >
+    <div key={name} css={styles.Course}>
       <div
         css={styles.row(isOdd)}
         onClick={() => setShowSections(!showSections)}
       >
         <div css={styles.id}>{deptCourseId}</div>
         <div css={styles.name}>{getOrKey(name, weirdCourseNames)}</div>
+        {isCoreReq && <div css={styles.core}> Core </div>}
       </div>
       {showSections && <SectionsList sections={sections} />}
     </div>
