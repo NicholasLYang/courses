@@ -89,7 +89,6 @@ const Section: React.FC<Props> = ({
     meetingTimes.push(
       `${dateTime.format("h:mm A")}-${endTime.format("h:mm A")}`
     );
-    console.log("End Time is " + meetingTimes)
   });
   return (
     <div css={styles.Section(isOdd)}>
