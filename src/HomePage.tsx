@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Link } from "react-router-dom";
 import React from "react";
+import AnimatedSubwayLine from "./AnimatedSubwayLine";
+import { Link } from "react-router-dom";
 
 const styles = {
   HomePage: {
@@ -12,26 +13,21 @@ const styles = {
     justifyContent: "center",
     lineHeight: "1.5em"
   },
-  links: {
+  season: {
     display: "flex",
-    justifyContent: "space-evenly",
-    height: "350px",
-    flexWrap: "wrap"
+    height: "80vh",
+    alignItems: "flex-end",
+    position: "relative"
   },
-  link: (color: string) => ({
+  seasonName: {
+    position: "absolute",
+    left: "-50px",
+    height: "80vh",
     width: "200px",
-    height: "150px",
-    margin: "50px",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-    textDecoration: "none",
-    backgroundColor: color,
-    "&:hover": {
-      textDecoration: "underline"
-    }
-  })
+    zIndex: 100
+  }
 } as const;
 
 const HomePage: React.FC = () => {
@@ -40,12 +36,19 @@ const HomePage: React.FC = () => {
       <div css={{ fontSize: "1.5em" }}>
         <h1> Courses </h1>
       </div>
-      <div css={styles.links}>
-        <Link css={styles.link("#809848")} to={`/2020/sp`}>
-          <h2> Spring 2020</h2>
+      <div
+        css={{ display: "flex", width: "80vw", justifyContent: "space-around" }}
+      >
+        <Link to="/2020/sp" css={styles.season}>
+          <h1 css={styles.seasonName}> Spring 2020 </h1>
+          <AnimatedSubwayLine color={"#e08e45"} />
         </Link>
-        <Link css={styles.link("#e08e45")} to={`/2020/fa`}>
-          <h2>Fall 2020</h2>
+        <Link to="/2020/fa" css={styles.season}>
+          <AnimatedSubwayLine
+            css={{ position: "absolute", left: "0", top: "0" }}
+            color={"#809848"}
+          />
+          <h1 css={styles.seasonName}> Fall 2020 </h1>
         </Link>
       </div>
     </div>

@@ -11,6 +11,7 @@ import SemesterPage from "./SemesterPage";
 import { getSchools, RootState } from "./duck";
 import CoursePage from "./CoursePage";
 import SearchPage from "./SearchPage";
+import SubwayDoor from "./SubwayDoor";
 
 const styles = {
   App: {
@@ -38,6 +39,10 @@ const App: React.FC = () => {
     return (
       <div css={{ ...styles.App, height: "100vh", justifyContent: "center" }}>
         <h2> Loading...</h2>
+        <div css={{ display: "flex" }}>
+          <SubwayDoor side="left" />
+          <SubwayDoor side="right" />
+        </div>
       </div>
     );
   }

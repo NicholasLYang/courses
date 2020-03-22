@@ -27,3 +27,5 @@ export const weirdSubjectNames: { [s: string]: string } = {
 export const statusMap: { [s: string]: string } = {
   WaitList: "Wait List"
 };
+
+export const STOPS_COUNT = 6;

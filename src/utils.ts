@@ -14,6 +14,10 @@ export function fixLocation(location: string): string {
     .replace("Bldg:COLU", "Columbia University");
 }
 
+export const getRandomInteger = (max: number): number => {
+  return Math.floor(Math.random() * max);
+};
+
 const coreClasses = new Set([
   "csci-ua-101",
   "csci-ua-102",
