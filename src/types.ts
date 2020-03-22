@@ -14,7 +14,7 @@ export interface ISection {
 
 export interface IMeeting {
   beginDate: Date;
-  duration: number;
+  minutesDuration: number;
   endDate: Date;
 }
 

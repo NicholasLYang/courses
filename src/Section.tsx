@@ -73,8 +73,6 @@ const Section: React.FC<Props> = ({
   name,
   isOdd
 }) => {
-  console.log("IS ODD");
-  console.log(isOdd);
   const meetingDateTimes = [];
   const meetingDays: string[] = [];
   const meetingTimes: string[] = [];
@@ -82,10 +80,11 @@ const Section: React.FC<Props> = ({
     const dateTime = moment.utc(m.beginDate);
     meetingDateTimes.push(dateTime);
     meetingDays.push(dateTime.format("ddd"));
-    const endTime = dateTime.clone().add(m.duration, "minutes");
+    const endTime = dateTime.clone().add(m.minutesDuration, "minutes");
     meetingTimes.push(
       `${dateTime.format("h:mm A")}-${endTime.format("h:mm A")}`
     );
+    console.log("End Time is " + meetingTimes)
   });
   return (
     <div css={styles.Section(isOdd)}>
