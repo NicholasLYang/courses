@@ -10,9 +10,9 @@ export const delay = (time: number) =>
 
 export function fixCredit(minUnits: number, maxUnits: number) : string {
   if(minUnits > 0) {
-    return minUnits + " - " + maxUnits
+    return `${minUnits} - ${maxUnits}`
   }
-  return maxUnits.toString();
+  return `${maxUnits}`;
 }
 
 export function fixLocation(location: string): string {
