@@ -10,7 +10,23 @@ const SemesterPage: React.FC = () => {
   const schools = useSelector((state: RootState) => state.core.schools);
   return (
     <div>
-      <Link to="/"> &#8592; Switch semester</Link>
+      <div
+        css={{
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        <Link css={{ padding: "5px" }} to="/">
+          {" "}
+          &#8592; Switch semester
+        </Link>
+        <Link
+          css={{ padding: "5px", textDecoration: "none" }}
+          to={`/${year}/${season}/search`}
+        >
+          <h2> Search (beta)</h2>
+        </Link>
+      </div>
       <ul
         css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
       >

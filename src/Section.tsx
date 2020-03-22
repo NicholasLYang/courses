@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import moment from "moment";
-import React, { useState } from "react";
+import React from "react";
 import { statusMap } from "./constants";
 import { IMeeting, ISection } from "./types";
 import { fixLocation } from "./utils";
@@ -11,11 +11,11 @@ interface Props {
   instructors: Array<string>;
   status: string;
   meetings: Array<IMeeting>;
-  description: string;
   location: string;
   name: string;
   notes: string;
   recitations: Array<ISection> | null;
+  isOdd: boolean;
 }
 
 function getStatusColor(status: string): string {
@@ -39,26 +39,21 @@ function getStatusName(status: string): string {
 }
 
 const styles = {
-  Section: {
-    display: "flex",
-    flexDirection: "column",
-    "&:nth-child(odd)": {
-      backgroundColor: "#dfdfdf"
-    }
-  },
+  Section: (isOdd: boolean) =>
+    ({
+      display: "flex",
+      flexDirection: "column",
+      backgroundColor: isOdd ? "#dfdfdf" : "#efefef"
+    } as const),
   row: {
     display: "flex",
     justifyContent: "space-evenly",
     flexWrap: "wrap",
     wordWrap: "break-word",
     padding: "10px",
-    transition: "0.1s background-color",
     "@media(max-width: 700px)": {
       flexDirection: "column",
       paddingLeft: "30px"
-    },
-    "&:hover": {
-      backgroundColor: "rgba(137,0,225,0.45)"
     }
   },
   status: (status: string) => ({
@@ -71,15 +66,15 @@ const styles = {
 } as const;
 
 const Section: React.FC<Props> = ({
-  description,
   instructors,
   status,
   meetings,
   location,
   name,
-  notes
+  isOdd
 }) => {
-  const [showDescription, setShowDescription] = useState(false);
+  console.log("IS ODD");
+  console.log(isOdd);
   const meetingDateTimes = [];
   const meetingDays: string[] = [];
   const meetingTimes: string[] = [];
@@ -93,11 +88,8 @@ const Section: React.FC<Props> = ({
     );
   });
   return (
-    <div css={styles.Section}>
-      <div
-        css={styles.row}
-        onClick={() => setShowDescription(!showDescription)}
-      >
+    <div css={styles.Section(isOdd)}>
+      <div css={styles.row}>
         <div css={styles.status(status)}>{getStatusName(status)} </div>
         {name && (
           <div
@@ -138,19 +130,11 @@ const Section: React.FC<Props> = ({
             padding: "5px"
           }}
         >
-          {meetingTimes.map(time => (
-            <div key={time}> {time} </div>
+          {meetingTimes.map((time, i) => (
+            <div key={i}> {time} </div>
           ))}
         </div>
       </div>
-      {showDescription && (
-        <React.Fragment>
-          <div css={{ padding: "20px", backgroundColor: "white" }}>
-            {description}
-          </div>
-          <div css={{ padding: "20px", backgroundColor: "white" }}>{notes}</div>
-        </React.Fragment>
-      )}
     </div>
   );
 };

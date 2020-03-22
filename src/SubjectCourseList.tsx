@@ -52,7 +52,8 @@ export const SubjectCourseList: React.FC<Props> = ({
             key={code}
             name={course.name}
             deptCourseId={course.deptCourseId}
-            sections={course.sections}
+            year={year}
+            season={season}
             isOdd={i % 2 !== 0}
           />
         ))}

@@ -6,38 +6,26 @@ import { ISection } from "./types";
 
 interface Props {
   sections: Array<ISection>;
+  displayDescription: boolean;
+  displayNotes: boolean;
 }
 
-const SectionsList: React.FC<Props> = ({ sections }) => {
+const SectionsList: React.FC<Props> = ({
+  sections,
+  displayDescription,
+  displayNotes
+}) => {
   return (
-    <div css={{ padding: "20px 0px 20px 0px" }}>
-      {sections.map(
-        ({
-          type,
-          instructors,
-          status,
-          meetings,
-          recitations,
-          location,
-          name,
-          sectionCode,
-          description,
-          notes
-        }) => (
-          <Section
-            key={sectionCode}
-            type={type}
-            instructors={instructors}
-            status={status}
-            meetings={meetings}
-            description={description}
-            location={location}
-            name={name}
-            notes={notes}
-            recitations={recitations}
-          />
-        )
-      )}
+    <div>
+      {sections.map((section, i) => (
+        <div css={{ padding: "10px" }} key={section.registrationNumber}>
+          <Section isOdd={!!(i % 2)} {...section} />
+          {displayDescription && (
+            <p>{section.description || "No description available"}</p>
+          )}
+          {displayNotes && <p> {section.notes}</p>}
+        </div>
+      ))}
     </div>
   );
 };

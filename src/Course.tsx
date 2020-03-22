@@ -1,36 +1,34 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 
-import React, { useState } from "react";
+import React from "react";
 import { weirdCourseNames } from "./constants";
-import SectionsList from "./SectionsList";
-import { ISection } from "./types";
 import { findCoreReqs, getOrKey } from "./utils";
+import { Link } from "react-router-dom";
 
 interface Props {
   schoolCode: string;
   subjectCode: string;
   name: string;
   deptCourseId: string;
-  sections: Array<ISection>;
+  year: string;
+  season: string;
   isOdd: boolean;
 }
 
 const styles = {
-  Course: {
+  Course: (isOdd: boolean) => ({
     fontSize: "1.2rem",
     display: "flex",
-    flexDirection: "column"
-  },
-  row: (isOdd: boolean) => ({
-    display: "flex",
+    backgroundColor: isOdd ? "#dfdfdf" : "#fefefe",
     padding: "10px",
     maxWidth: "50vw",
     transition: "0.1s background-color",
+    textDecoration: "none",
+    color: "black",
     "@media(max-width: 1000px)": {
       maxWidth: "70vw"
     },
-    backgroundColor: isOdd ? "#dfdfdf" : "white",
     "&:hover": {
       backgroundColor: "rgba(137,0,225,0.45)"
     }
@@ -55,23 +53,21 @@ const Course: React.FC<Props> = ({
   subjectCode,
   name,
   deptCourseId,
-  sections,
+  year,
+  season,
   isOdd
 }) => {
   const isCoreReq = findCoreReqs(schoolCode, subjectCode, deptCourseId);
-  const [showSections, setShowSections] = useState(false);
   return (
-    <div key={name} css={styles.Course}>
-      <div
-        css={styles.row(isOdd)}
-        onClick={() => setShowSections(!showSections)}
-      >
-        <div css={styles.id}>{deptCourseId}</div>
-        <div css={styles.name}>{getOrKey(name, weirdCourseNames)}</div>
-        {isCoreReq && <div css={styles.core}> Core </div>}
-      </div>
-      {showSections && <SectionsList sections={sections} />}
-    </div>
+    <Link
+      to={`/${year}/${season}/${schoolCode}/${subjectCode}/${deptCourseId}`}
+      key={name}
+      css={styles.Course(isOdd)}
+    >
+      <div css={styles.id}>{deptCourseId}</div>
+      <div css={styles.name}>{getOrKey(name, weirdCourseNames)}</div>
+      {isCoreReq && <div css={styles.core}> Core </div>}
+    </Link>
   );
 };
 

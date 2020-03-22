@@ -21,6 +21,7 @@ export interface IMeeting {
 export interface ICourse {
   name: string;
   deptCourseId: string;
+  subjectCode: { code: string; school: string };
   sections: Array<ISection>;
 }
 
