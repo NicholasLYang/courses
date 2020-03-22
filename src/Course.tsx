@@ -2,8 +2,7 @@
 import { jsx } from "@emotion/core";
 
 import React from "react";
-import { weirdCourseNames } from "./constants";
-import { findCoreReqs, getOrKey } from "./utils";
+import { findCoreReqs, fixCourseName } from "./utils";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -22,7 +21,6 @@ const styles = {
     display: "flex",
     backgroundColor: isOdd ? "#dfdfdf" : "#fefefe",
     padding: "10px",
-    maxWidth: "50vw",
     transition: "0.1s background-color",
     textDecoration: "none",
     color: "black",
@@ -65,8 +63,8 @@ const Course: React.FC<Props> = ({
       css={styles.Course(isOdd)}
     >
       <div css={styles.id}>{deptCourseId}</div>
-      <div css={styles.name}>{getOrKey(name, weirdCourseNames)}</div>
-      {isCoreReq && <div css={styles.core}> Core </div>}
+      <div css={styles.name}>{fixCourseName(name)}</div>
+      {isCoreReq && <div css={styles.core}> Major Req </div>}
     </Link>
   );
 };

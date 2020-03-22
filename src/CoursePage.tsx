@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import SectionsList from "./SectionsList";
 import { LoadingState } from "./types";
+import { fixCourseName } from "./utils";
 
 const CoursePage = () => {
   const { subjectCode, schoolCode, courseCode, year, season } = useParams();
@@ -40,7 +41,7 @@ const CoursePage = () => {
       <Link to={`/${year}/${season}/${schoolCode}/${subjectCode}`}>
         &#8592; Back to subject
       </Link>
-      <h1> {course.name} </h1>
+      <h1> {fixCourseName(course.name)} </h1>
       {allDescriptionsEqual && <p>{course.sections[0].description}</p>}
       <h2> Sections </h2>
       <SectionsList

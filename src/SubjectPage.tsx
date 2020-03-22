@@ -3,8 +3,7 @@ import { jsx } from "@emotion/core";
 
 import React, { useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { getOrKey } from "./utils";
-import { weirdSubjectNames } from "./constants";
+import { fixSubjectName } from "./utils";
 import { SubjectCourseList } from "./SubjectCourseList";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubjects, RootState } from "./duck";
@@ -56,7 +55,7 @@ const SubjectPage: React.FC = () => {
       <Link to={`/${year}/${season}/${schoolCode}`}>
         &#8592; Switch subject
       </Link>
-      <h1> {getOrKey(subject.name, weirdSubjectNames)} </h1>
+      <h2> {fixSubjectName(subject.name, subjectCode)} </h2>
       <header>
         <h3> Courses </h3>
       </header>

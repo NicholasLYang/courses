@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import { LoadingState } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubjects, RootState } from "./duck";
-import { getOrKey } from "./utils";
-import { weirdSubjectNames } from "./constants";
+import { fixSubjectName } from "./utils";
 
 interface Props {
   schoolCode: string;
@@ -42,7 +41,7 @@ const SchoolSubjectsList: React.FC<Props> = ({ schoolCode, year, season }) => {
           .sort((a, b) => a[0].localeCompare(b[0]))
           .map(([code, subject]) => (
             <Link key={code} to={`/${year}/${season}/${schoolCode}/${code}`}>
-              {getOrKey(subject.name, weirdSubjectNames)}
+              {fixSubjectName(subject.name, code)}
             </Link>
           ))}
       </ul>
