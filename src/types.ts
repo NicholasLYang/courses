@@ -10,6 +10,8 @@ export interface ISection {
   description: string;
   name: string;
   notes: string;
+  minUnits : number;
+  maxUnits : number;
 }
 
 export interface IMeeting {
