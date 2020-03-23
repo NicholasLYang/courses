@@ -14,6 +14,13 @@ export function getOrKey(key: string, obj: { [s: string]: string }): string {
 export const delay = (time: number) =>
   new Promise(resolve => setTimeout(resolve, time));
 
+export function fixCredit(minUnits: number, maxUnits: number) : string {
+  if(minUnits > 0) {
+    return `${minUnits} - ${maxUnits}`
+  }
+  return `${maxUnits}`;
+}
+
 export function fixLocation(location: string): string {
   return location
     .replace("Room:", "Room: ")

@@ -4,7 +4,7 @@ import moment from "moment";
 import React from "react";
 import { statusMap } from "./constants";
 import { IMeeting, ISection } from "./types";
-import { fixLocation } from "./utils";
+import { fixLocation, fixCredit } from "./utils";
 
 interface Props {
   type: string;
@@ -15,6 +15,8 @@ interface Props {
   name: string;
   notes: string;
   recitations: Array<ISection> | null;
+  minUnits : number;
+  maxUnits : number;
   isOdd: boolean;
 }
 
@@ -66,15 +68,16 @@ const styles = {
 } as const;
 
 const Section: React.FC<Props> = ({
+  type,
   instructors,
   status,
   meetings,
   location,
   name,
+  minUnits,
+  maxUnits,
   isOdd
 }) => {
-  console.log("IS ODD");
-  console.log(isOdd);
   const meetingDateTimes = [];
   const meetingDays: string[] = [];
   const meetingTimes: string[] = [];
@@ -82,7 +85,7 @@ const Section: React.FC<Props> = ({
     const dateTime = moment.utc(m.beginDate);
     meetingDateTimes.push(dateTime);
     meetingDays.push(dateTime.format("ddd"));
-    const endTime = dateTime.clone().add(m.duration, "minutes");
+    const endTime = dateTime.clone().add(m.minutesDuration, "minutes");
     meetingTimes.push(
       `${dateTime.format("h:mm A")}-${endTime.format("h:mm A")}`
     );
@@ -106,14 +109,26 @@ const Section: React.FC<Props> = ({
         <div
           css={{
             display: "flex",
-            width: "120px",
+            width: "100px",
             flexDirection: "column",
             padding: "5px"
           }}
         >
-          {instructors.map(i => (
-            <div key={i}> {i} </div>
-          ))}
+            <div> {instructors.join(', ')} </div>
+         </div>
+         <div
+           css={{
+             display: "flex",
+             width: "80px",
+             flexDirection: "column",
+             padding: "5px"
+           }}
+         >
+         <div> {type} </div>
+         </div>
+         <div css={{ width: "20px", maxWidth: "50vw", padding: "5px" }}>
+           {" "}
+           {fixCredit(minUnits, maxUnits)}
         </div>
         <div css={{ width: "200px", maxWidth: "50vw", padding: "5px" }}>
           {" "}
