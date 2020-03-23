@@ -23,11 +23,12 @@ const SectionsList: React.FC<Props> = ({
       {sections.map((section, i) => (
         <div css={{ padding: "10px" }} key={section.registrationNumber}>
           <Section isOdd={!!(i % 2)} {...section} />
+          {section.recitations && 
           <SectionsList 
-            sections = {section.recitations} 
+            sections={section.recitations} 
             displayDescription = {false}
-            displayNotes={false}
-          />
+            displayNotes = {false}
+          /> }
           {displayDescription && (
             <p>{section.description || "No description available"}</p>
           )}
