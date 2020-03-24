@@ -37,7 +37,8 @@ export const weirdCourseNames: { [s: string]: string } = {
   "Prob & Meth in Mideast Studies":
     "Problems & Methods in Middle Eastern Studies",
   "Prob & Meth in Hebrew & Judaic Studies":
-    "Problems & Methods in Hebrew & Judaic Studies"
+    "Problems & Methods in Hebrew & Judaic Studies",
+  "Prin of Financial Acctg": "Principals of Financial Accounting"
 };
 
 export const weirdSubjectNames: { [s: string]: string } = {

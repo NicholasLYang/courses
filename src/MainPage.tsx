@@ -8,7 +8,9 @@ import SubjectView from "./SubjectView";
 import CourseView from "./CourseView";
 
 const styles = {
-  MainPage: { display: "flex", justifyContent: "space-around" }
+  MainPage: {
+    display: "flex"
+  }
 } as const;
 
 const MainPage = () => {
@@ -23,6 +25,7 @@ const MainPage = () => {
         if (courseCode !== undefined) {
           views = [
             <SubjectView
+              shouldDisplayBack={true}
               year={year}
               season={season}
               schoolCode={schoolCode}
@@ -38,8 +41,14 @@ const MainPage = () => {
           ];
         } else {
           views = [
-            <SchoolView year={year} season={season} schoolCode={schoolCode} />,
+            <SchoolView
+              shouldDisplayBack={true}
+              year={year}
+              season={season}
+              schoolCode={schoolCode}
+            />,
             <SubjectView
+              shouldDisplayBack={false}
               subjectCode={subjectCode}
               schoolCode={schoolCode}
               year={year}
@@ -50,7 +59,12 @@ const MainPage = () => {
       } else {
         views = [
           <SemesterView year={year} season={season} />,
-          <SchoolView schoolCode={schoolCode} year={year} season={season} />
+          <SchoolView
+            shouldDisplayBack={false}
+            schoolCode={schoolCode}
+            year={year}
+            season={season}
+          />
         ];
       }
     } else {
