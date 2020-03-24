@@ -37,11 +37,15 @@ const CourseView: React.FC<Props> = ({
     (state: RootState) => state.core.loadingState
   );
   const error = useSelector((state: RootState) => state.core.error);
-  if (loadingState === LoadingState.Loading || course === undefined) {
-    return <h2> Loading...</h2>;
+  if (course === undefined) {
+    return (
+      <View>
+        <h2> Loading...</h2>
+      </View>
+    );
   }
   if (loadingState === LoadingState.Failed) {
-    return <div css={{ color: "red" }}> {error} </div>;
+    return <View css={{ color: "red" }}> {error} </View>;
   }
   const allDescriptionsEqual = course.sections.every(
     section => section.description === course.sections[0].description
