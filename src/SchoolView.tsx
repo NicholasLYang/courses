@@ -22,18 +22,20 @@ const SchoolView: React.FC<Props> = ({
   season,
   shouldDisplayBack
 }) => {
-  const schools = useSelector((state: RootState) => state.core.schools);
+  const schools = useSelector(
+    (state: RootState) => state.core.schools.entities
+  );
   const school = schools[schoolCode];
   const dispatch = useDispatch();
   const loadingState = useSelector(
-    (state: RootState) => state.core.loadingState
+    (state: RootState) => state.core.subjects.loadingState
   );
   useEffect(() => {
     dispatch(getSubjects(schoolCode));
   }, [dispatch, schoolCode]);
-  const error = useSelector((state: RootState) => state.core.error);
+  const error = useSelector((state: RootState) => state.core.subjects.error);
   const subjects = useSelector(
-    (state: RootState) => state.core.subjects[schoolCode]
+    (state: RootState) => state.core.subjects.entities[schoolCode]
   );
   if (subjects === undefined) {
     return (

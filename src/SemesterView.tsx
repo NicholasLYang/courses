@@ -1,10 +1,13 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { Link } from "react-router-dom";
-import { RootState } from "./duck";
-import { useSelector } from "react-redux";
-import React from "react";
+import { getSchools, RootState } from "./duck";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import View from "./View";
+import { getOrKey } from "./utils";
+import { seasons } from "./constants";
+import { LoadingState } from "./types";
 
 interface Props {
   year: string;
@@ -12,7 +15,33 @@ interface Props {
 }
 
 const SemesterView: React.FC<Props> = ({ year, season }) => {
-  const schools = useSelector((state: RootState) => state.core.schools);
+  const dispatch = useDispatch();
+  const loadingState = useSelector(
+    (state: RootState) => state.core.schools.loadingState
+  );
+  const error = useSelector((state: RootState) => state.core.schools.error);
+  useEffect(() => {
+    dispatch(getSchools());
+  }, [dispatch]);
+  const schools = useSelector(
+    (state: RootState) => state.core.schools.entities
+  );
+  if (loadingState === LoadingState.Loading) {
+    return (
+      <View>
+        {" "}
+        <h2> Loading...</h2>
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View>
+        <h1> {`${year} ${getOrKey(season, seasons)}`}</h1>
+        <div css={{ color: "red" }}> {error.toString()}</div>
+      </View>
+    );
+  }
   return (
     <View>
       <div

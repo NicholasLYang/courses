@@ -1,9 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import React from "react";
-import { RootState } from "./duck";
-import { useSelector } from "react-redux";
-import { LoadingState } from "./types";
 
 const styles = {
   width: "40vw",
@@ -15,16 +12,6 @@ const styles = {
 };
 
 const View: React.FC = ({ children }) => {
-  const loadingState = useSelector(
-    (state: RootState) => state.core.loadingState
-  );
-  if (loadingState === LoadingState.Loading) {
-    return (
-      <div css={styles}>
-        <h2> Loading...</h2>
-      </div>
-    );
-  }
   return <div css={styles}>{children}</div>;
 };
 

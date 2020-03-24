@@ -29,14 +29,14 @@ const CourseView: React.FC<Props> = ({
   }, [subjectCode, schoolCode, season, year, dispatch]);
   const course = useSelector(
     (state: RootState) =>
-      state.core.courses[`${year}-${season}-${subjectCode}-${schoolCode}`]?.[
-        courseCode!
-      ]
+      state.core.courses.entities[
+        `${year}-${season}-${subjectCode}-${schoolCode}`
+      ]?.[courseCode!]
   );
   const loadingState = useSelector(
-    (state: RootState) => state.core.loadingState
+    (state: RootState) => state.core.courses.loadingState
   );
-  const error = useSelector((state: RootState) => state.core.error);
+  const error = useSelector((state: RootState) => state.core.courses.error);
   if (course === undefined) {
     return (
       <View>

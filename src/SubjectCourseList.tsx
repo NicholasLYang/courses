@@ -28,13 +28,15 @@ export const SubjectCourseList: React.FC<Props> = ({
     dispatch(getCourses(year, season, schoolCode, subjectCode));
   }, [subjectCode, schoolCode, season, year, dispatch]);
   const loadingState = useSelector(
-    (state: RootState) => state.core.loadingState
+    (state: RootState) => state.core.courses.loadingState
   );
   const courses = useSelector(
     (state: RootState) =>
-      state.core.courses[`${year}-${season}-${subjectCode}-${schoolCode}`]
+      state.core.courses.entities[
+        `${year}-${season}-${subjectCode}-${schoolCode}`
+      ]
   );
-  const error = useSelector((state: RootState) => state.core.error);
+  const error = useSelector((state: RootState) => state.core.courses.error);
   if (loadingState === LoadingState.Loading || courses === undefined) {
     return <h2> Loading...</h2>;
   }

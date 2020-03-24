@@ -1,7 +1,7 @@
 import {
-  configureStore,
-  combineReducers,
   Action,
+  combineReducers,
+  configureStore,
   createSlice,
   PayloadAction
 } from "@reduxjs/toolkit";
@@ -19,20 +19,30 @@ if (process.env.NODE_ENV === "development" && module.hot) {
   });
 }
 
-interface CoreState {
+interface Entity<T> {
   loadingState: LoadingState;
-  schools: { [s: string]: { [s: string]: string } };
-  courses: { [s: string]: { [code: string]: ICourse } };
-  subjects: { [s: string]: { [s: string]: { [s: string]: string } } };
+  entities: T;
   error: string | undefined;
 }
 
-const initialState: CoreState = {
+interface CoreState {
+  schools: Entity<{ [schoolCode: string]: { [s: string]: string } }>;
+  courses: Entity<{
+    [subjectCode: string]: { [deptCourseId: string]: ICourse };
+  }>;
+  subjects: Entity<{ [s: string]: { [s: string]: { [s: string]: string } } }>;
+}
+
+const initialEntity = {
   loadingState: LoadingState.Loading,
-  schools: {},
-  courses: {},
-  subjects: {},
+  entities: {},
   error: undefined
+};
+
+const initialState: CoreState = {
+  schools: { ...initialEntity },
+  courses: { ...initialEntity },
+  subjects: { ...initialEntity }
 };
 
 interface GetSubjectPayload {
@@ -58,34 +68,50 @@ const coreSlice = createSlice({
       state,
       action: PayloadAction<{ [s: string]: { [s: string]: string } }>
     ) {
-      state.loadingState = LoadingState.Success;
-      state.schools = action.payload;
+      console.log("ACTION");
+      console.log(action);
+      state.schools.loadingState = LoadingState.Success;
+      state.schools.entities = action.payload;
     },
     getSchoolsFailure(state, action: PayloadAction<string>) {
-      state.error = action.payload;
+      state.schools.error = action.payload;
+    },
+    getSubjectsPending(state) {
+      state.subjects.loadingState = LoadingState.Loading;
     },
     getSubjectsSuccess(state, action: PayloadAction<GetSubjectPayload>) {
-      state.subjects = action.payload.subjects;
-      state.loadingState = LoadingState.Success;
+      state.subjects.entities = action.payload.subjects;
+      state.subjects.loadingState = LoadingState.Success;
     },
     getSubjectsFailure(state, action: PayloadAction<string>) {
-      state.loadingState = LoadingState.Failed;
-      state.error = action.payload;
+      state.subjects.loadingState = LoadingState.Failed;
+      state.subjects.error = action.payload;
+    },
+    getCoursesPending(state) {
+      state.courses.loadingState = LoadingState.Loading;
     },
     getCoursesSuccess(state, action: PayloadAction<GetCoursesPayload>) {
       const { year, season, schoolCode, subjectCode, courses } = action.payload;
-      state.courses[`${year}-${season}-${subjectCode}-${schoolCode}`] = courses;
-      state.loadingState = LoadingState.Success;
+      state.courses.entities[
+        `${year}-${season}-${subjectCode}-${schoolCode}`
+      ] = courses;
+      state.courses.loadingState = LoadingState.Success;
     },
     getCoursesFailure(state, action: PayloadAction<string>) {
-      state.loadingState = LoadingState.Failed;
-      state.error = action.payload;
+      state.courses.loadingState = LoadingState.Failed;
+      state.courses.error = action.payload;
     },
-    startLoading(state) {
-      state.loadingState = LoadingState.Loading;
+    startLoading(
+      state,
+      action: PayloadAction<"courses" | "subjects" | "schools">
+    ) {
+      state[action.payload].loadingState = LoadingState.Loading;
     },
-    finishLoading(state) {
-      state.loadingState = LoadingState.Success;
+    finishLoading(
+      state,
+      action: PayloadAction<"courses" | "subjects" | "schools">
+    ) {
+      state[action.payload].loadingState = LoadingState.Success;
     }
   }
 });
@@ -93,11 +119,12 @@ const coreSlice = createSlice({
 const {
   getSchoolsSuccess,
   getSchoolsFailure,
+  getSubjectsPending,
   getSubjectsSuccess,
   getSubjectsFailure,
+  getCoursesPending,
   getCoursesSuccess,
   getCoursesFailure,
-  startLoading,
   finishLoading
 } = coreSlice.actions;
 
@@ -105,7 +132,7 @@ export const getSchools = (): AppThunk => async (dispatch, getState) => {
   const {
     core: { schools }
   } = getState();
-  if (Object.entries(schools).length === 0) {
+  if (Object.entries(schools.entities).length === 0) {
     try {
       const res = await fetch(`${API_URL}/schools`);
       const schools = await res.json();
@@ -114,7 +141,7 @@ export const getSchools = (): AppThunk => async (dispatch, getState) => {
       dispatch(getSchoolsFailure(e.toString()));
     }
   } else {
-    dispatch(finishLoading());
+    dispatch(finishLoading("schools"));
   }
 };
 
@@ -129,9 +156,9 @@ export const getSubjects = (code: string | undefined): AppThunk => async (
   const {
     core: { subjects }
   } = getState();
-  if (!(code in subjects)) {
+  if (!(code in subjects.entities)) {
     try {
-      dispatch(startLoading());
+      dispatch(getSubjectsPending());
       const res = await fetch(`${API_URL}/subjects?school=${code}`);
       const subjects = await res.json();
       dispatch(getSubjectsSuccess({ subjects, code }));
@@ -139,7 +166,7 @@ export const getSubjects = (code: string | undefined): AppThunk => async (
       dispatch(getSubjectsFailure(err.toString()));
     }
   } else {
-    dispatch(finishLoading());
+    dispatch(finishLoading("subjects"));
   }
 };
 
@@ -152,9 +179,12 @@ export const getCourses = (
   const {
     core: { courses }
   } = getState();
-  if (courses[`${year}-${season}-${subjectCode}-${schoolCode}`] === undefined) {
+  if (
+    courses.entities[`${year}-${season}-${subjectCode}-${schoolCode}`] ===
+    undefined
+  ) {
     try {
-      dispatch(startLoading());
+      dispatch(getCoursesPending());
       const res = await fetch(
         `${API_URL}/${year}/${season}/${schoolCode}/${subjectCode}?full=true`
       );
