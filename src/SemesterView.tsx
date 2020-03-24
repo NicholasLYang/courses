@@ -1,15 +1,20 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RootState } from "./duck";
 import { useSelector } from "react-redux";
 import React from "react";
+import View from "./View";
 
-const SemesterPage: React.FC = () => {
-  const { year, season } = useParams();
+interface Props {
+  year: string;
+  season: string;
+}
+
+const SemesterView: React.FC<Props> = ({ year, season }) => {
   const schools = useSelector((state: RootState) => state.core.schools);
   return (
-    <div>
+    <View>
       <div
         css={{
           display: "flex",
@@ -36,8 +41,8 @@ const SemesterPage: React.FC = () => {
           </Link>
         ))}
       </ul>
-    </div>
+    </View>
   );
 };
 
-export default SemesterPage;
+export default SemesterView;

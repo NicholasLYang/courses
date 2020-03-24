@@ -67,7 +67,12 @@ const coreClasses = new Set([
   "math-ua-123",
   "math-ua-140",
   "math-ua-325",
-  "math-ua-343"
+  "math-ua-343",
+  "ds-ua-111",
+  "ds-ua-112",
+  "ds-ua-201",
+  "ds-ua-202",
+  "ds-ua-301"
 ]);
 
 export function findCoreReqs(

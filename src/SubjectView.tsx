@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/core";
 
 import React, { useEffect } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { fixSubjectName } from "./utils";
 import { SubjectCourseList } from "./SubjectCourseList";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,14 +10,30 @@ import { getSubjects, RootState } from "./duck";
 import { LoadingState } from "./types";
 
 const styles = {
-  SubjectPage: {
+  SubjectView: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    width: "40vw",
+    height: "80vh",
+    overflow: "scroll",
+    padding: "20px",
+    boxShadow: "0px 4px 22px -6px rgba(0,0,0,0.75);"
   }
 } as const;
 
-const SubjectPage: React.FC = () => {
-  const { subjectCode, schoolCode, year, season } = useParams();
+interface Props {
+  subjectCode: string;
+  schoolCode: string;
+  year: string;
+  season: string;
+}
+
+const SubjectView: React.FC<Props> = ({
+  subjectCode,
+  schoolCode,
+  year,
+  season
+}) => {
   const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,7 +67,7 @@ const SubjectPage: React.FC = () => {
   }
 
   return (
-    <div css={styles.SubjectPage}>
+    <div css={styles.SubjectView}>
       <Link to={`/${year}/${season}/${schoolCode}`}>
         &#8592; Switch subject
       </Link>
@@ -69,4 +85,4 @@ const SubjectPage: React.FC = () => {
   );
 };
 
-export default SubjectPage;
+export default SubjectView;

@@ -44,10 +44,10 @@ const HomePage: React.FC = () => {
       <div
         css={{ display: "flex", width: "80vw", justifyContent: "space-around" }}
       >
-        <Link to="/2020/sp" css={styles.season("#e08e45")}>
+        <Link to="/2020/sp" css={styles.season("#809848")}>
           <h2 css={{ fontSize: "2.5em" }}> Spring </h2>
         </Link>
-        <Link to="/2020/fa" css={styles.season("#809848")}>
+        <Link to="/2020/fa" css={styles.season("#e08e45")}>
           <h2 css={{ fontSize: "2.5em" }}> Fall </h2>
         </Link>
       </div>

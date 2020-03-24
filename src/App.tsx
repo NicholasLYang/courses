@@ -4,25 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoadingState } from "./types";
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
-import SubjectPage from "./SubjectPage";
 import HomePage from "./HomePage";
-import SchoolPage from "./SchoolPage";
-import SemesterPage from "./SemesterPage";
 import { getSchools, RootState } from "./duck";
-import CoursePage from "./CoursePage";
-import SearchPage from "./SearchPage";
-import SubwayDoor from "./SubwayDoor";
+import MainPage from "./MainPage";
 
 const styles = {
   App: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: "100vw",
-    paddingBottom: "50px"
+    width: "100vw"
   },
   content: {
-    width: "60vw"
+    width: "90vw"
   }
 } as const;
 
@@ -35,17 +29,6 @@ const App: React.FC = () => {
   const loadingState = useSelector(
     (state: RootState) => state.core.loadingState
   );
-  if (loadingState === LoadingState.Loading) {
-    return (
-      <div css={{ ...styles.App, height: "100vh", justifyContent: "center" }}>
-        <h2> Loading...</h2>
-        <div css={{ display: "flex" }}>
-          <SubwayDoor side="left" />
-          <SubwayDoor side="right" />
-        </div>
-      </div>
-    );
-  }
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
@@ -57,7 +40,7 @@ const App: React.FC = () => {
             <Route exact path="/">
               <HomePage />
             </Route>
-            <Route path="/:semester">
+            <Route path="/:year/:season">
               <Link
                 css={{
                   textDecoration: "none",
@@ -70,23 +53,9 @@ const App: React.FC = () => {
               >
                 <h1> Courses </h1>
               </Link>
-              <Switch>
-                <Route exact path="/:year/:season">
-                  <SemesterPage />
-                </Route>
-                <Route path="/:year/:season/search">
-                  <SearchPage />
-                </Route>
-                <Route exact path="/:year/:season/:schoolCode">
-                  <SchoolPage />
-                </Route>
-                <Route exact path="/:year/:season/:schoolCode/:subjectCode">
-                  <SubjectPage />
-                </Route>
-                <Route path="/:year/:season/:schoolCode/:subjectCode/:courseCode">
-                  <CoursePage />
-                </Route>
-              </Switch>
+              <Route path="/:year/:season/:schoolCode?/:subjectCode?/:courseCode?">
+                <MainPage />
+              </Route>
             </Route>
           </Switch>
         </div>
