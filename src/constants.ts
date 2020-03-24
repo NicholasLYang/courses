@@ -52,10 +52,6 @@ export const weirdSubjectNames: { [s: string]: string } = {
   "Ctr for Experiment Humanities": "Center for Experimental Humanities"
 };
 
-export const statusMap: { [s: string]: string } = {
-  WaitList: "Wait List"
-};
-
 export const internationalSubjects: { [s: string]: string } = {
   ICINE: "Cinema Studies (International)",
   IFMTV: "Film & TV (International)",
@@ -65,3 +61,8 @@ export const internationalSubjects: { [s: string]: string } = {
 };
 
 export const STOPS_COUNT = 6;
+
+export const seasons = {
+  sp: "Spring",
+  fa: "Fall"
+};

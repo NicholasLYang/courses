@@ -25,6 +25,7 @@ const MainPage = () => {
         if (courseCode !== undefined) {
           views = [
             <SubjectView
+              key={2}
               shouldDisplayBack={true}
               year={year}
               season={season}
@@ -32,6 +33,7 @@ const MainPage = () => {
               subjectCode={subjectCode}
             />,
             <CourseView
+              key={3}
               year={year}
               season={season}
               schoolCode={schoolCode}
@@ -42,12 +44,14 @@ const MainPage = () => {
         } else {
           views = [
             <SchoolView
+              key={1}
               shouldDisplayBack={true}
               year={year}
               season={season}
               schoolCode={schoolCode}
             />,
             <SubjectView
+              key={2}
               shouldDisplayBack={false}
               subjectCode={subjectCode}
               schoolCode={schoolCode}
@@ -58,8 +62,9 @@ const MainPage = () => {
         }
       } else {
         views = [
-          <SemesterView year={year} season={season} />,
+          <SemesterView key={0} year={year} season={season} />,
           <SchoolView
+            key={1}
             shouldDisplayBack={false}
             schoolCode={schoolCode}
             year={year}
@@ -68,7 +73,7 @@ const MainPage = () => {
         ];
       }
     } else {
-      views = [<SemesterView year={year} season={season} />];
+      views = [<SemesterView key={0} year={year} season={season} />];
     }
   }
   return <div css={styles.MainPage}>{views}</div>;

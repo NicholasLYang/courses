@@ -30,11 +30,12 @@ const SubjectView: React.FC<Props> = ({
     dispatch(getSubjects(schoolCode));
   }, [dispatch, schoolCode]);
   const loadingState = useSelector(
-    (state: RootState) => state.core.loadingState
+    (state: RootState) => state.core.subjects.loadingState
   );
-  const error = useSelector((state: RootState) => state.core.error);
+  const error = useSelector((state: RootState) => state.core.subjects.error);
   const subject = useSelector(
-    (state: RootState) => state.core.subjects?.[schoolCode!]?.[subjectCode!]
+    (state: RootState) =>
+      state.core.subjects?.entities[schoolCode!]?.[subjectCode!]
   );
   if (subject === undefined) {
     return (
