@@ -4,16 +4,22 @@ import { Link, useParams } from "react-router-dom";
 import { RootState } from "./duck";
 import { useSelector } from "react-redux";
 import React from "react";
+import View from "./View";
 
-const SemesterPage: React.FC = () => {
-  const { year, season } = useParams();
+interface Props {
+  year: string;
+  season: string;
+}
+
+const SemesterView: React.FC<Props> = ({ year, season }) => {
   const schools = Object.entries(
     useSelector((state: RootState) => state.core.schools)
   );
   const undergradSchools = schools.filter(([code]) => code[0] !== "G");
   const gradSchools = schools.filter(([code]) => code[0] === "G");
+
   return (
-    <div>
+    <View>
       <div
         css={{
           display: "flex",
@@ -51,8 +57,8 @@ const SemesterPage: React.FC = () => {
           </Link>
         ))}
       </ul>
-    </div>
+    </View>
   );
 };
 
-export default SemesterPage;
+export default SemesterView;

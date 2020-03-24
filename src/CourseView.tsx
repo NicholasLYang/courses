@@ -1,15 +1,28 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { getCourses, RootState } from "./duck";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
 import SectionsList from "./SectionsList";
 import { LoadingState } from "./types";
 import { fixCourseName } from "./utils";
+import View from "./View";
 
-const CoursePage = () => {
-  const { subjectCode, schoolCode, courseCode, year, season } = useParams();
+interface Props {
+  subjectCode: string;
+  schoolCode: string;
+  courseCode: string;
+  year: string;
+  season: string;
+}
+
+const CourseView: React.FC<Props> = ({
+  subjectCode,
+  schoolCode,
+  courseCode,
+  year,
+  season
+}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCourses(year!, season!, schoolCode!, subjectCode!));
@@ -37,20 +50,24 @@ const CoursePage = () => {
     section => section.notes === course.sections[0].notes
   );
   return (
-    <div>
-      <Link to={`/${year}/${season}/${schoolCode}/${subjectCode}`}>
-        &#8592; Back to subject
-      </Link>
-      <h1> {fixCourseName(course.name)} </h1>
-      {allDescriptionsEqual && <p>{course.sections[0].description}</p>}
-      <h2> Sections </h2>
-      <SectionsList
-        sections={course.sections}
-        displayDescription={!allDescriptionsEqual}
-        displayNotes={!allNotesEqual}
-      />
-    </div>
+    <View>
+      <div
+        css={{
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        <h1>{fixCourseName(course.name)} </h1>
+        {allDescriptionsEqual && <p>{course.sections[0].description}</p>}
+        <h2> Sections </h2>
+        <SectionsList
+          sections={course.sections}
+          displayDescription={!allDescriptionsEqual}
+          displayNotes={!allNotesEqual}
+        />
+      </div>
+    </View>
   );
 };
 
-export default CoursePage;
+export default CourseView;

@@ -40,7 +40,19 @@ const SchoolSubjectsList: React.FC<Props> = ({ schoolCode, year, season }) => {
         {Object.entries(subjects)
           .sort((a, b) => a[0].localeCompare(b[0]))
           .map(([code, subject]) => (
-            <Link key={code} to={`/${year}/${season}/${schoolCode}/${code}`}>
+            <Link
+              css={{
+                padding: "10px",
+                fontSize: "1.2em",
+                textDecoration: "none",
+                backgroundColor: "#fefefe",
+                "&:nth-child(odd)": {
+                  backgroundColor: "#dfdfdf"
+                }
+              }}
+              key={code}
+              to={`/${year}/${season}/${schoolCode}/${code}`}
+            >
               {fixSubjectName(subject.name, code)}
             </Link>
           ))}
