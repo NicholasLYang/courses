@@ -8,7 +8,14 @@ const styles = {
   height: "80vh",
   margin: "20px",
   overflow: "scroll",
-  boxShadow: "0px 4px 22px -6px rgba(0,0,0,0.75)"
+  boxShadow: "0px 4px 22px -6px rgba(0,0,0,0.75)",
+  "@media(max-width: 700px)": {
+    width: "80vw",
+    boxShadow: "none",
+    overflow: "visible",
+    margin: "0px",
+    paddingBottom: "20px"
+  }
 };
 
 const View: React.FC = ({ children }) => {

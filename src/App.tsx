@@ -4,6 +4,8 @@ import React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import HomePage from "./HomePage";
 import MainPage from "./MainPage";
+import MobileMainPage from "./MobileMainPage";
+import { useWindowWidth } from "@react-hook/window-size/dist/es";
 
 const styles = {
   App: {
@@ -18,6 +20,7 @@ const styles = {
 } as const;
 
 const App: React.FC = () => {
+  const width = useWindowWidth();
   return (
     <div css={styles.App}>
       <Router>
@@ -40,7 +43,7 @@ const App: React.FC = () => {
                 <h1> Courses </h1>
               </Link>
               <Route path="/:year/:season/:schoolCode?/:subjectCode?/:courseCode?">
-                <MainPage />
+                {width > 700 ? <MainPage /> : <MobileMainPage />}
               </Route>
             </Route>
           </Switch>
