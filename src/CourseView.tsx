@@ -7,6 +7,7 @@ import SectionsList from "./SectionsList";
 import { LoadingState } from "./types";
 import { fixCourseName } from "./utils";
 import View from "./View";
+import { Link } from "react-router-dom";
 
 interface Props {
   subjectCode: string;
@@ -14,6 +15,7 @@ interface Props {
   courseCode: string;
   year: string;
   season: string;
+  shouldDisplayBack?: boolean;
 }
 
 const CourseView: React.FC<Props> = ({
@@ -21,7 +23,8 @@ const CourseView: React.FC<Props> = ({
   schoolCode,
   courseCode,
   year,
-  season
+  season,
+  shouldDisplayBack
 }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -61,6 +64,11 @@ const CourseView: React.FC<Props> = ({
           flexDirection: "column"
         }}
       >
+        {shouldDisplayBack && (
+          <Link to={`/${year}/${season}/${schoolCode}`}>
+            &#8592; Switch course
+          </Link>
+        )}
         <h1>{fixCourseName(course.name)} </h1>
         {allDescriptionsEqual && <p>{course.sections[0].description}</p>}
         <h2> Sections </h2>

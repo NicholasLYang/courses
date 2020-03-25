@@ -3,7 +3,7 @@ import { jsx } from "@emotion/core";
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSubjects, RootState } from "./duck";
+import { getSchools, getSubjects, RootState } from "./duck";
 import View from "./View";
 import { Link } from "react-router-dom";
 import { LoadingState } from "./types";
@@ -31,6 +31,7 @@ const SchoolView: React.FC<Props> = ({
     (state: RootState) => state.core.subjects.loadingState
   );
   useEffect(() => {
+    dispatch(getSchools());
     dispatch(getSubjects(schoolCode));
   }, [dispatch, schoolCode]);
   const error = useSelector((state: RootState) => state.core.subjects.error);
@@ -47,12 +48,14 @@ const SchoolView: React.FC<Props> = ({
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
+  console.log(school);
   return (
     <View>
       <h2> {school?.name || schoolCode}</h2>
       {shouldDisplayBack && (
         <Link to={`/${year}/${season}`}> &#8592; Switch school</Link>
       )}
+      <h3> Subjects </h3>
       <ul
         css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
       >
@@ -66,6 +69,9 @@ const SchoolView: React.FC<Props> = ({
                 textDecoration: "none",
                 backgroundColor: "#fefefe",
                 width: "30vw",
+                "@media(max-width: 700px)": {
+                  width: "50vw"
+                },
                 "&:nth-child(odd)": {
                   backgroundColor: "#dfdfdf"
                 }
