@@ -72,7 +72,7 @@ const SchoolView: React.FC<Props> = ({
                 "@media(max-width: 700px)": {
                   width: "50vw"
                 },
-                "&:nth-child(odd)": {
+                "&:nth-of-type(odd)": {
                   backgroundColor: "#dfdfdf"
                 }
               }}

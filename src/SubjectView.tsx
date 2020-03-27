@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSubjects, RootState } from "./duck";
 import { LoadingState } from "./types";
 import View from "./View";
+import { requirements } from "./constants";
+import MajorRequirements from "./MajorRequirements";
 
 interface Props {
   subjectCode: string;
@@ -48,6 +50,8 @@ const SubjectView: React.FC<Props> = ({
     return <div css={{ color: "red" }}> {error} </div>;
   }
 
+  const majorReqsKey = `${year}-${season}-${subjectCode}`.toLowerCase();
+
   return (
     <View>
       {shouldDisplayBack && (
@@ -56,6 +60,15 @@ const SubjectView: React.FC<Props> = ({
         </Link>
       )}
       <h2> {fixSubjectName(subject.name, subjectCode)} </h2>
+      {majorReqsKey in requirements && (
+        <MajorRequirements
+          year={year}
+          season={season}
+          subjectCode={subjectCode}
+          schoolCode={schoolCode}
+          requirements={requirements[majorReqsKey]}
+        />
+      )}
       <header>
         <h3> Courses </h3>
       </header>
