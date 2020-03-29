@@ -68,8 +68,6 @@ const coreSlice = createSlice({
       state,
       action: PayloadAction<{ [s: string]: { [s: string]: string } }>
     ) {
-      console.log("ACTION");
-      console.log(action);
       state.schools.loadingState = LoadingState.Success;
       state.schools.entities = action.payload;
     },
