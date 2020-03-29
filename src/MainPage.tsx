@@ -6,6 +6,7 @@ import SemesterView from "./SemesterView";
 import SchoolView from "./SchoolView";
 import SubjectView from "./SubjectView";
 import CourseView from "./CourseView";
+import SearchPage from "./SearchPage";
 
 const styles = {
   MainPage: {
@@ -21,7 +22,12 @@ const MainPage = () => {
   // we pick the most specific views we can display
   if (year !== undefined && season !== undefined) {
     if (schoolCode !== undefined) {
-      if (subjectCode !== undefined) {
+      if (schoolCode === "search") {
+        views = [
+          <SemesterView key={0} year={year} season={season} />,
+          <SearchPage key={1} year={year} season={season} />
+        ];
+      } else if (subjectCode !== undefined) {
         if (courseCode !== undefined) {
           views = [
             <SubjectView

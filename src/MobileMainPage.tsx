@@ -6,6 +6,7 @@ import SchoolView from "./SchoolView";
 import SubjectView from "./SubjectView";
 import CourseView from "./CourseView";
 import View from "./View";
+import SearchPage from "./SearchPage";
 
 const styles = {
   MobileMainPage: {
@@ -31,7 +32,11 @@ const MobileMainPage = () => {
   // we're going down the list of params and depending on which are undefined,
   // we pick the most specific views we can display
   if (schoolCode !== undefined) {
-    if (subjectCode !== undefined) {
+    if (schoolCode === "search") {
+      view = (
+        <SearchPage year={year} season={season} shouldDisplayBack={true} />
+      );
+    } else if (subjectCode !== undefined) {
       if (courseCode !== undefined) {
         view = (
           <CourseView

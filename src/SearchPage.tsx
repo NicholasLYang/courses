@@ -4,14 +4,20 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { API_URL } from "./constants";
 import Course from "./Course";
 import { ICourse } from "./types";
-import { Link, useParams, useLocation, useHistory } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
+import View from "./View";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const SearchPage: React.FC = () => {
-  const { year, season } = useParams();
+interface Props {
+  year: string;
+  season: string;
+  shouldDisplayBack?: boolean;
+}
+
+const SearchPage: React.FC<Props> = ({ year, season, shouldDisplayBack }) => {
   const query = useQuery();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -36,9 +42,11 @@ const SearchPage: React.FC = () => {
     setSearchResults(searchResults);
   }
   return (
-    <div>
+    <View>
       {" "}
-      <Link to={`/${year}/${season}`}> &#8592; Back </Link>
+      {shouldDisplayBack && (
+        <Link to={`/${year}/${season}`}> &#8592; Back </Link>
+      )}
       <h1> Search </h1>
       <form
         onSubmit={(e: FormEvent) => {
@@ -76,7 +84,7 @@ const SearchPage: React.FC = () => {
           />
         ))}
       </div>
-    </div>
+    </View>
   );
 };
 
