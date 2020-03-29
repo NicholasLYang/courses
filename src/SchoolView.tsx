@@ -48,7 +48,6 @@ const SchoolView: React.FC<Props> = ({
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  console.log(school);
   return (
     <View>
       <h2> {school?.name || schoolCode}</h2>
