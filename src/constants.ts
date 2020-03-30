@@ -24,7 +24,7 @@ export const weirdCourseNames: { [s: string]: string } = {
     "East Asian Art II: China, Korea, Japan, 1000Ce-Pr",
   "From Huck Finn to Columbine:Understanding Disruptive Behaviors in Chldrn & Adolscnt":
     "From Huck Finn to Columbine: Understanding Disruptive Behaviors in Children & Adolescents",
-  TrendingMentalHealth: "Trending Mental Health",
+  "TrendingMentalHealth": "Trending Mental Health",
   "Adv Sem: Autism Spectrum Disorders":
     "Advanced Seminar: Autism Spectrum Disorders",
   "Elemen French Level I": "Elementary French Level I",

@@ -11,11 +11,28 @@ export function getOrKey(key: string, obj: { [s: string]: string }): string {
   return key;
 }
 
+export function convertTerm(season: string | undefined): string {
+  switch (season) {
+    case "sp":
+      return `Spring`;
+    case "fa":
+      return "Fall";
+    case "ja":
+      return "JTerm";
+    case "su":
+      return "Summer";
+    default:
+      return "";
+  }
+}
+
 export const delay = (time: number) =>
   new Promise(resolve => setTimeout(resolve, time));
 
 export function fixCredit(minUnits: number, maxUnits: number): string {
-  if (minUnits > 0) {
+  if (minUnits === 0 && maxUnits === 0) {
+    return ``;
+  } else if (minUnits > 0) {
     return `${minUnits} - ${maxUnits}`;
   }
   return `${maxUnits}`;
