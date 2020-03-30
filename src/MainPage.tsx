@@ -44,8 +44,7 @@ const Breadcrumb: React.FC<Props> = props => {
   const lastIndex = children.length - 1;
   children = children.reduce((acc, child, index) => {
     const notLast = index < lastIndex;
-    if (notLast && child !== "") {
-      console.log(child);
+    if (notLast) {
       acc.push(
         child,
         <BreadcrumbSeparator key={`breadcrumb_sep${index}`}>
