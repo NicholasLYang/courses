@@ -1,13 +1,13 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { ReactNodeArray } from "react";
+import { ReactNodeArray} from "react";
 import { Link, useParams } from "react-router-dom";
 import SemesterView from "./SemesterView";
 import SchoolView from "./SchoolView";
 import SubjectView from "./SubjectView";
 import CourseView from "./CourseView";
 import React from "react";
-import { convertTerm } from "./utils";
+import { convertTerm, Schools } from "./utils";
 
 const styles = {
   MainPage: {
@@ -34,6 +34,7 @@ const BreadcrumbItem: React.FC<Props> = ({ children, ...props }) => (
     {children}
   </li>
 );
+
 
 const Breadcrumb: React.FC<Props> = props => {
   let children = React.Children.toArray(props.children);
@@ -67,19 +68,7 @@ const Breadcrumb: React.FC<Props> = props => {
 const MainPage = () => {
   const { subjectCode, schoolCode, courseCode, year, season } = useParams();
   let views: ReactNodeArray = [];
-  let items = [
-    { to: `/`, label: convertTerm(season) },
-    { to: `/${year}/${season}/${schoolCode}`, label: `${schoolCode}` },
-    {
-      to: `/${year}/${season}/${schoolCode}/${subjectCode}`,
-      label: `${subjectCode}`
-    },
-    {
-      to: `/${year}/${season}/${schoolCode}/${subjectCode}/${courseCode}`,
-      label: `${courseCode}`
-    }
-  ];
-
+  let items = [{ to: `/`, label: convertTerm(season) }];
   // There's probably a way more intelligent way of doing this but basically
   // we're going down the list of params and depending on which are undefined,
   // we pick the most specific views we can display
@@ -89,7 +78,7 @@ const MainPage = () => {
         if (courseCode !== undefined) {
           items = [
             { to: `/`, label: convertTerm(season) },
-            { to: `/${year}/${season}/${schoolCode}`, label: `${schoolCode}` },
+            { to: `/${year}/${season}/${schoolCode}`, label: Schools(schoolCode) },
             {
               to: `/${year}/${season}/${schoolCode}/${subjectCode}`,
               label: `${subjectCode}`
@@ -120,7 +109,7 @@ const MainPage = () => {
         } else {
           items = [
             { to: `/`, label: convertTerm(season) },
-            { to: `/${year}/${season}/${schoolCode}`, label: `${schoolCode}` },
+            { to: `/${year}/${season}/${schoolCode}`, label: Schools(schoolCode) },
             {
               to: `/${year}/${season}/${schoolCode}/${subjectCode}`,
               label: `${subjectCode}`
@@ -147,7 +136,7 @@ const MainPage = () => {
       } else {
         items = [
           { to: `/`, label: convertTerm(season) },
-          { to: `/${year}/${season}/${schoolCode}`, label: `${schoolCode}` }
+          { to: `/${year}/${season}/${schoolCode}`, label: Schools(schoolCode) }
         ];
         views = [
           <SemesterView key={0} year={year} season={season} />,
@@ -161,7 +150,6 @@ const MainPage = () => {
         ];
       }
     } else {
-      items = [{ to: `/`, label: convertTerm(season) }];
       views = [<SemesterView key={0} year={year} season={season} />];
     }
   }

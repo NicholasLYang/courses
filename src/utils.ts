@@ -3,12 +3,26 @@ import {
   weirdCourseNames,
   weirdSubjectNames
 } from "./constants";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, getSchools } from "./duck";
+import { useEffect } from "react";
 
 export function getOrKey(key: string, obj: { [s: string]: string }): string {
   if (key in obj) {
     return obj[key];
   }
   return key;
+}
+
+export const Schools = (key : string) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSchools());
+  }, [dispatch]);
+  const schools = useSelector(
+    (state: RootState) => state.core.schools.entities
+  );
+  return schools[key]['name'];
 }
 
 export function convertTerm(season: string | undefined): string {
