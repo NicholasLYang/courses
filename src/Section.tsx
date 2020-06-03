@@ -15,8 +15,8 @@ interface Props {
   name: string;
   notes: string;
   recitations: Array<ISection> | null;
-  minUnits : number;
-  maxUnits : number;
+  minUnits: number;
+  maxUnits: number;
   isOdd: boolean;
 }
 
@@ -114,21 +114,21 @@ const Section: React.FC<Props> = ({
             padding: "5px"
           }}
         >
-            <div> {instructors.join(', ')} </div>
-         </div>
-         <div
-           css={{
-             display: "flex",
-             width: "80px",
-             flexDirection: "column",
-             padding: "5px"
-           }}
-         >
-         <div> {type} </div>
-         </div>
-         <div css={{ width: "20px", maxWidth: "50vw", padding: "5px" }}>
-           {" "}
-           {fixCredit(minUnits, maxUnits)}
+          <div> {instructors.join(", ")} </div>
+        </div>
+        <div
+          css={{
+            display: "flex",
+            width: "80px",
+            flexDirection: "column",
+            padding: "5px"
+          }}
+        >
+          <div> {type} </div>
+        </div>
+        <div css={{ width: "20px", maxWidth: "50vw", padding: "5px" }}>
+          {" "}
+          {fixCredit(minUnits, maxUnits)}
         </div>
         <div css={{ width: "200px", maxWidth: "50vw", padding: "5px" }}>
           {" "}

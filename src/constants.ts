@@ -2,7 +2,10 @@
   Constant for API_URL, course and subject names,
   handling odd data
 */
-export const API_URL = "https://schedge.torchnyu.com";
+export const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://schedge.torchnyu.com"
+    : "http://localhost:8001";
 
 export const weirdCourseNames: { [s: string]: string } = {
   "Intro to Computer SCI": "Intro to Computer Science",
