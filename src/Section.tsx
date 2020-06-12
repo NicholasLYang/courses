@@ -2,7 +2,6 @@
 import { jsx } from "@emotion/core";
 import moment from "moment";
 import React from "react";
-import { statusMap } from "./constants";
 import { IMeeting, ISection } from "./types";
 import { fixLocation, fixCredit } from "./utils";
 
@@ -33,13 +32,6 @@ function getStatusColor(status: string): string {
   }
 }
 
-function getStatusName(status: string): string {
-  if (status in statusMap) {
-    return statusMap[status];
-  }
-  return status;
-}
-
 const styles = {
   Section: (isOdd: boolean) =>
     ({
@@ -59,11 +51,11 @@ const styles = {
     }
   },
   status: (status: string) => ({
-    padding: "10px",
-    width: "80px",
-    display: "flex",
-    justifyContent: "center",
-    color: getStatusColor(status)
+    margin: "20px",
+    width: "25px",
+    height: "25px",
+    borderRadius: "50%",
+    backgroundColor: getStatusColor(status)
   })
 } as const;
 
@@ -93,7 +85,7 @@ const Section: React.FC<Props> = ({
   return (
     <div css={styles.Section(isOdd)}>
       <div css={styles.row}>
-        <div css={styles.status(status)}>{getStatusName(status)} </div>
+        <div css={styles.status(status)} />
         {name && (
           <div
             css={{
@@ -130,7 +122,7 @@ const Section: React.FC<Props> = ({
           {" "}
           {fixCredit(minUnits, maxUnits)}
         </div>
-        <div css={{ width: "200px", maxWidth: "50vw", padding: "5px" }}>
+        <div css={{ width: "150px", maxWidth: "40vw", padding: "5px" }}>
           {" "}
           {fixLocation(location)}{" "}
         </div>

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LoadingState } from "./types";
 import Course from "./Course";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,17 +21,22 @@ export const SubjectCourseList: React.FC<Props> = ({
   season
 }) => {
   const dispatch = useDispatch();
+  const [activeCourse, setActiveCourse] = useState<string | undefined>(
+    undefined
+  );
   useEffect(() => {
     dispatch(getCourses(year, season, schoolCode, subjectCode));
   }, [subjectCode, schoolCode, season, year, dispatch]);
   const loadingState = useSelector(
-    (state: RootState) => state.core.loadingState
+    (state: RootState) => state.core.courses.loadingState
   );
   const courses = useSelector(
     (state: RootState) =>
-      state.core.courses[`${year}-${season}-${subjectCode}-${schoolCode}`]
+      state.core.courses.entities[
+        `${year}-${season}-${subjectCode}-${schoolCode}`
+      ]
   );
-  const error = useSelector((state: RootState) => state.core.error);
+  const error = useSelector((state: RootState) => state.core.courses.error);
   if (loadingState === LoadingState.Loading || courses === undefined) {
     return <h2> Loading...</h2>;
   }
@@ -47,6 +52,10 @@ export const SubjectCourseList: React.FC<Props> = ({
         )
         .map(([code, course], i) => (
           <Course
+            handleClick={() => {
+              setActiveCourse(code);
+            }}
+            active={activeCourse === code}
             schoolCode={schoolCode}
             subjectCode={subjectCode}
             key={code}

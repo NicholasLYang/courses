@@ -33,11 +33,19 @@ export enum LoadingState {
   Failed
 }
 
-export interface ISubject {
-  name: string;
+export enum Op {
+  Or,
+  And,
+  Choose
 }
 
-export interface ISchool {
-  name: string;
-  code: string;
-}
+export type IRequirement =
+  | {
+      op: Op.And | Op.Or;
+      args: Array<IRequirement | string>;
+    }
+  | {
+      op: Op.Choose;
+      num: number;
+      args: Array<IRequirement | string>;
+    };

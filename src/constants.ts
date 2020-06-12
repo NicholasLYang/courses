@@ -2,6 +2,9 @@
   Constant for API_URL, course and subject names,
   handling odd data
 */
+
+import { IRequirement, Op } from "./types";
+
 export const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://schedge.torchnyu.com"
@@ -40,7 +43,8 @@ export const weirdCourseNames: { [s: string]: string } = {
   "Prob & Meth in Mideast Studies":
     "Problems & Methods in Middle Eastern Studies",
   "Prob & Meth in Hebrew & Judaic Studies":
-    "Problems & Methods in Hebrew & Judaic Studies"
+    "Problems & Methods in Hebrew & Judaic Studies",
+  "Prin of Financial Acctg": "Principals of Financial Accounting"
 };
 
 export const weirdSubjectNames: { [s: string]: string } = {
@@ -49,10 +53,6 @@ export const weirdSubjectNames: { [s: string]: string } = {
   "Latin Amer-Caribbean Studies": "Latin American-Caribbean Studies",
   "Ctr for Art, Society & Pub Pol": "Center for Art, Society & Public Policy",
   "Ctr for Experiment Humanities": "Center for Experimental Humanities"
-};
-
-export const statusMap: { [s: string]: string } = {
-  WaitList: "Wait List"
 };
 
 export const internationalSubjects: { [s: string]: string } = {
@@ -64,3 +64,47 @@ export const internationalSubjects: { [s: string]: string } = {
 };
 
 export const STOPS_COUNT = 6;
+
+export const seasons = {
+  sp: "Spring",
+  fa: "Fall"
+};
+
+export const requirements: { [code: string]: IRequirement } = {
+  "2020-fa-csci": {
+    op: Op.And,
+    args: [
+      "csci-ua-101",
+      "csci-ua-102",
+      "csci-ua-201",
+      "csci-ua-202",
+      "csci-ua-310",
+      {
+        op: Op.Choose,
+        num: 5,
+        args: ["csci-ua-472", "csci-ua-473", "csci-ua-480"]
+      }
+    ]
+  },
+  "2020-sp-csci": {
+    op: Op.And,
+    args: [
+      "csci-ua-101",
+      "csci-ua-102",
+      "csci-ua-201",
+      "csci-ua-202",
+      "csci-ua-310",
+      {
+        op: Op.Choose,
+        num: 5,
+        args: [
+          "csci-ua-473",
+          "csci-ua-476",
+          "csci-ua-479",
+          "csci-ua-480",
+          "csci-ua-490"
+        ]
+      }
+    ]
+  }
+};

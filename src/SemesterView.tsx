@@ -1,19 +1,52 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Link, useParams } from "react-router-dom";
-import { RootState } from "./duck";
-import { useSelector } from "react-redux";
-import React from "react";
+import { Link } from "react-router-dom";
+import { getSchools, RootState } from "./duck";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import View from "./View";
+import { getOrKey } from "./utils";
+import { seasons } from "./constants";
+import { LoadingState } from "./types";
 
-const SemesterPage: React.FC = () => {
-  const { year, season } = useParams();
+interface Props {
+  year: string;
+  season: string;
+}
+
+const SemesterView: React.FC<Props> = ({ year, season }) => {
+  const dispatch = useDispatch();
+  const loadingState = useSelector(
+    (state: RootState) => state.core.schools.loadingState
+  );
+  const error = useSelector((state: RootState) => state.core.schools.error);
+  useEffect(() => {
+    dispatch(getSchools());
+  }, [dispatch]);
   const schools = Object.entries(
-    useSelector((state: RootState) => state.core.schools)
+    useSelector((state: RootState) => state.core.schools.entities)
   );
   const undergradSchools = schools.filter(([code]) => code[0] !== "G");
   const gradSchools = schools.filter(([code]) => code[0] === "G");
+
+  if (loadingState === LoadingState.Loading) {
+    return (
+      <View>
+        {" "}
+        <h2> Loading...</h2>
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View>
+        <h1> {`${year} ${getOrKey(season, seasons)}`}</h1>
+        <div css={{ color: "red" }}> {error.toString()}</div>
+      </View>
+    );
+  }
   return (
-    <div>
+    <View>
       <div
         css={{
           display: "flex",
@@ -51,8 +84,8 @@ const SemesterPage: React.FC = () => {
           </Link>
         ))}
       </ul>
-    </div>
+    </View>
   );
 };
 
-export default SemesterPage;
+export default SemesterView;
