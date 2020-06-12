@@ -2,18 +2,17 @@
 import { jsx } from "@emotion/core";
 
 import React from "react";
-import { IRequirement, LoadingState, Op } from "./types";
-import { Link } from "react-router-dom";
+import { IRequirement, LoadingState, RequirementType } from "./types";
 import { useSelector } from "react-redux";
 import { RootState } from "./duck";
-import { fixCourseName } from "./utils";
+import CourseLink from "./CourseLink";
 
 interface Props {
   year: string;
   season: string;
   subjectCode: string;
   schoolCode: string;
-  requirements: IRequirement;
+  requirements: IRequirement[];
 }
 
 const styles = {
@@ -41,30 +40,32 @@ const MajorRequirements: React.FC<Props> = ({
   if (loadingState === LoadingState.Loading) {
     return null;
   }
-  function stringToCourse(str: string) {
-    const [subjectCode, schoolCode, deptCourseId] = str.split("-");
-    return (
-      <Link
-        to={`/${year}/${season}/${schoolCode}/${subjectCode}/${deptCourseId}`}
-        css={{ padding: "5px" }}
-      >
-        {fixCourseName(courses[deptCourseId].name)}
-      </Link>
-    );
-  }
+
   function displayRequirements(req: IRequirement) {
-    const argsComponents = req.args.flatMap(arg =>
-      typeof arg === "string" ? [stringToCourse(arg)] : displayRequirements(arg)
-    );
-    if (req.op === Op.And) {
+    if (req.type === RequirementType.One) {
+      const [subjectCode, schoolCode, deptCourseId] = req.name.split("-");
+
+      return (
+        <CourseLink
+          year={year}
+          season={season}
+          subjectCode={subjectCode}
+          schoolCode={schoolCode}
+          deptCourseId={deptCourseId}
+          name={courses[deptCourseId].name}
+        />
+      );
+    }
+    const argsComponents = req.args.map(arg => displayRequirements(arg));
+    if (req.type === RequirementType.And) {
       return <div css={styles.reqBlock}> ALL of: {argsComponents} </div>;
     }
-    if (req.op === Op.Or) {
+    if (req.type === RequirementType.Or) {
       return (
         <div css={styles.reqBlock}> AT LEAST ONE of: {argsComponents} </div>
       );
     }
-    if (req.op === Op.Choose) {
+    if (req.type === RequirementType.Choose) {
       return (
         <div css={styles.reqBlock}>
           {" "}
@@ -77,7 +78,7 @@ const MajorRequirements: React.FC<Props> = ({
     <div>
       <h3> Major Requirements </h3>
       <div css={{ padding: "0px 20px 0px 20px" }}>
-        {displayRequirements(requirements)}
+        {requirements.map(req => displayRequirements(req))}
       </div>
     </div>
   );

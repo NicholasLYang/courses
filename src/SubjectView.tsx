@@ -50,7 +50,7 @@ const SubjectView: React.FC<Props> = ({
     return <div css={{ color: "red" }}> {error} </div>;
   }
 
-  const majorReqsKey = `${year}-${season}-${subjectCode}`.toLowerCase();
+  const majorReqsKey = `${year}-${season}-${schoolCode}-${subjectCode}`.toLowerCase();
 
   return (
     <View>

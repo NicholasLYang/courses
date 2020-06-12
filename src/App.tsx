@@ -6,6 +6,7 @@ import HomePage from "./HomePage";
 import MainPage from "./MainPage";
 import MobileMainPage from "./MobileMainPage";
 import { useWindowWidth } from "@react-hook/window-size/dist/es";
+import CompSciRequirementsPage from "./CompSciRequirementsPage";
 
 const styles = {
   App: {
@@ -28,6 +29,9 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path="/">
               <HomePage />
+            </Route>
+            <Route exact path="/comp-sci-reqs">
+              <CompSciRequirementsPage />
             </Route>
             <Route path="/:year/:season">
               <Link

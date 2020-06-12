@@ -3,7 +3,7 @@
   handling odd data
 */
 
-import { IRequirement, Op } from "./types";
+import { IRequirement, RequirementType } from "./types";
 
 export const API_URL =
   process.env.NODE_ENV === "production"
@@ -63,48 +63,58 @@ export const internationalSubjects: { [s: string]: string } = {
   ISPEC: "TSOA Special Programs (International)"
 };
 
-export const STOPS_COUNT = 6;
-
 export const seasons = {
   sp: "Spring",
   fa: "Fall"
 };
 
-export const requirements: { [code: string]: IRequirement } = {
-  "2020-fa-csci": {
-    op: Op.And,
-    args: [
-      "csci-ua-101",
-      "csci-ua-102",
-      "csci-ua-201",
-      "csci-ua-202",
-      "csci-ua-310",
-      {
-        op: Op.Choose,
-        num: 5,
-        args: ["csci-ua-472", "csci-ua-473", "csci-ua-480"]
-      }
-    ]
-  },
-  "2020-sp-csci": {
-    op: Op.And,
-    args: [
-      "csci-ua-101",
-      "csci-ua-102",
-      "csci-ua-201",
-      "csci-ua-202",
-      "csci-ua-310",
-      {
-        op: Op.Choose,
-        num: 5,
-        args: [
-          "csci-ua-473",
-          "csci-ua-476",
-          "csci-ua-479",
-          "csci-ua-480",
-          "csci-ua-490"
-        ]
-      }
-    ]
-  }
+export const requirements: { [code: string]: IRequirement[] } = {
+  "2020-fa-ua-csci": [
+    { type: RequirementType.One, name: "csci-ua-101" },
+    { type: RequirementType.One, name: "csci-ua-102" },
+    { type: RequirementType.One, name: "csci-ua-201" },
+    { type: RequirementType.One, name: "csci-ua-202" },
+    { type: RequirementType.One, name: "csci-ua-310" },
+    {
+      type: RequirementType.Choose,
+      num: 5,
+      args: [
+        { type: RequirementType.One, name: "csci-ua-472" },
+        { type: RequirementType.One, name: "csci-ua-473" },
+        { type: RequirementType.One, name: "csci-ua-480" }
+      ]
+    }
+  ],
+  "2020-fa-uy-cs": [
+    { type: RequirementType.One, name: "cs-uy-1114" },
+    { type: RequirementType.One, name: "cs-uy-1122" },
+    { type: RequirementType.One, name: "cs-uy-1134" },
+    { type: RequirementType.One, name: "cs-uy-2124" },
+    { type: RequirementType.One, name: "cs-uy-2214" },
+    { type: RequirementType.One, name: "cs-uy-2413" },
+    { type: RequirementType.One, name: "cs-uy-3224" },
+    { type: RequirementType.One, name: "cs-uy-4513" },
+    { type: RequirementType.One, name: "cs-uy-4523" }
+  ],
+  "2020-sp-ua-csci": [
+    { type: RequirementType.One, name: "csci-ua-101" },
+    { type: RequirementType.One, name: "csci-ua-102" },
+    { type: RequirementType.One, name: "csci-ua-201" },
+    { type: RequirementType.One, name: "csci-ua-202" },
+    { type: RequirementType.One, name: "csci-ua-310" },
+    {
+      type: RequirementType.Choose,
+      num: 5,
+      args: [
+        { type: RequirementType.One, name: "csci-ua-473" },
+        { type: RequirementType.One, name: "csci-ua-476" },
+        { type: RequirementType.One, name: "csci-ua-479" },
+        { type: RequirementType.One, name: "csci-ua-480" },
+        { type: RequirementType.One, name: "csci-ua-490" }
+      ]
+    }
+  ]
 };
+
+export const CURRENT_YEAR = "2020";
+export const CURRENT_SEASON = "fa";

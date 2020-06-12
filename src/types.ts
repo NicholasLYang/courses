@@ -33,19 +33,21 @@ export enum LoadingState {
   Failed
 }
 
-export enum Op {
+export enum RequirementType {
   Or,
   And,
-  Choose
+  Choose,
+  One
 }
 
 export type IRequirement =
+  | { type: RequirementType.One; name: string }
   | {
-      op: Op.And | Op.Or;
-      args: Array<IRequirement | string>;
+      type: RequirementType.And | RequirementType.Or;
+      args: Array<IRequirement>;
     }
   | {
-      op: Op.Choose;
+      type: RequirementType.Choose;
       num: number;
-      args: Array<IRequirement | string>;
+      args: Array<IRequirement>;
     };
