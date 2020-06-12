@@ -7,8 +7,8 @@ import { RootState } from "./duck";
 
 const SchoolPage: React.FC = () => {
   const { schoolCode, year, season } = useParams();
-  const schools = useSelector((state: RootState) => state.core.schools);
   const history = useHistory();
+  const schools = useSelector((state: RootState) => state.core.schools);
 
   if (schoolCode === undefined || year === undefined || season === undefined) {
     history.push("/");

@@ -5,7 +5,7 @@
 export const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://schedge.torchnyu.com"
-    : "http://localhost:8001";
+    : "https://schedge.torchnyu.com";
 
 export const weirdCourseNames: { [s: string]: string } = {
   "Intro to Computer SCI": "Intro to Computer Science",

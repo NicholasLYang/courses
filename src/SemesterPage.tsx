@@ -7,7 +7,11 @@ import React from "react";
 
 const SemesterPage: React.FC = () => {
   const { year, season } = useParams();
-  const schools = useSelector((state: RootState) => state.core.schools);
+  const schools = Object.entries(
+    useSelector((state: RootState) => state.core.schools)
+  );
+  const undergradSchools = schools.filter(([code]) => code[0] !== "G");
+  const gradSchools = schools.filter(([code]) => code[0] === "G");
   return (
     <div>
       <div
@@ -24,13 +28,24 @@ const SemesterPage: React.FC = () => {
           css={{ padding: "5px", textDecoration: "none" }}
           to={`/${year}/${season}/search`}
         >
-          <h2> Search (beta)</h2>
+          <h2> Search</h2>
         </Link>
       </div>
+      <h3> Undergraduate </h3>
       <ul
         css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
       >
-        {Object.entries(schools).map(([code, school]) => (
+        {undergradSchools.map(([code, school]) => (
+          <Link key={code} to={`/${year}/${season}/${code}`}>
+            {school.name}
+          </Link>
+        ))}
+      </ul>
+      <h3> Graduate </h3>
+      <ul
+        css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}
+      >
+        {gradSchools.map(([code, school]) => (
           <Link key={code} to={`/${year}/${season}/${code}`}>
             {school.name}
           </Link>
