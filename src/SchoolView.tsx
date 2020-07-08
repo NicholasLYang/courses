@@ -13,15 +13,9 @@ interface Props {
   schoolCode: string;
   year: string;
   season: string;
-  shouldDisplayBack: boolean;
 }
 
-const SchoolView: React.FC<Props> = ({
-  schoolCode,
-  year,
-  season,
-  shouldDisplayBack
-}) => {
+const SchoolView: React.FC<Props> = ({ schoolCode, year, season }) => {
   const schools = useSelector(
     (state: RootState) => state.core.schools.entities
   );
@@ -48,13 +42,9 @@ const SchoolView: React.FC<Props> = ({
   if (loadingState === LoadingState.Failed) {
     return <div css={{ color: "red" }}> {error} </div>;
   }
-  console.log(school);
   return (
     <View>
       <h2> {school?.name || schoolCode}</h2>
-      {shouldDisplayBack && (
-        <Link to={`/${year}/${season}`}> &#8592; Switch school</Link>
-      )}
       <h3> Subjects </h3>
       <ul
         css={{ display: "flex", flexDirection: "column", lineHeight: "1.5em" }}

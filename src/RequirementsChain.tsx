@@ -12,7 +12,14 @@ interface Props {
 
 const RequirementsChain: React.FC<Props> = ({ requirements, name }) => {
   return (
-    <div css={{ padding: "20px" }}>
+    <div
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "wrap",
+        height: "750px"
+      }}
+    >
       <h1> {name} </h1>
       {requirements.map(req => (
         <Requirement req={req} />

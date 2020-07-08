@@ -73,6 +73,7 @@ const SearchPage: React.FC = () => {
             year={year!}
             season={season!}
             isOdd={!!(i % 2)}
+            sections={result.sections}
           />
         ))}
       </div>

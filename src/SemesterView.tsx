@@ -53,10 +53,6 @@ const SemesterView: React.FC<Props> = ({ year, season }) => {
           flexDirection: "column"
         }}
       >
-        <Link css={{ padding: "5px" }} to="/">
-          {" "}
-          &#8592; Switch semester
-        </Link>
         <Link
           css={{ padding: "5px", textDecoration: "none" }}
           to={`/${year}/${season}/search`}

@@ -2,7 +2,6 @@
 import { jsx } from "@emotion/core";
 
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { fixSubjectName } from "./utils";
 import { SubjectCourseList } from "./SubjectCourseList";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,15 +16,13 @@ interface Props {
   schoolCode: string;
   year: string;
   season: string;
-  shouldDisplayBack: boolean;
 }
 
 const SubjectView: React.FC<Props> = ({
   subjectCode,
   schoolCode,
   year,
-  season,
-  shouldDisplayBack
+  season
 }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -37,7 +34,9 @@ const SubjectView: React.FC<Props> = ({
   const error = useSelector((state: RootState) => state.core.subjects.error);
   const subject = useSelector(
     (state: RootState) =>
-      state.core.subjects?.entities[schoolCode!]?.[subjectCode!]
+      state.core.subjects?.entities[schoolCode.toUpperCase()!]?.[
+        subjectCode.toUpperCase()!
+      ]
   );
   if (subject === undefined) {
     return (
@@ -50,24 +49,13 @@ const SubjectView: React.FC<Props> = ({
     return <div css={{ color: "red" }}> {error} </div>;
   }
 
-  const majorReqsKey = `${year}-${season}-${schoolCode}-${subjectCode}`.toLowerCase();
+  const majorReqsKey = `${schoolCode}-${subjectCode}`.toLowerCase();
 
   return (
     <View>
-      {shouldDisplayBack && (
-        <Link to={`/${year}/${season}/${schoolCode}`}>
-          &#8592; Switch subject
-        </Link>
-      )}
       <h2> {fixSubjectName(subject.name, subjectCode)} </h2>
       {majorReqsKey in requirements && (
-        <MajorRequirements
-          year={year}
-          season={season}
-          subjectCode={subjectCode}
-          schoolCode={schoolCode}
-          requirements={requirements[majorReqsKey]}
-        />
+        <MajorRequirements requirements={requirements[majorReqsKey]} />
       )}
       <header>
         <h3> Courses </h3>

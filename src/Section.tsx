@@ -17,6 +17,7 @@ interface Props {
   minUnits: number;
   maxUnits: number;
   isOdd: boolean;
+  instructionMode: string;
 }
 
 function getStatusColor(status: string): string {
@@ -32,16 +33,29 @@ function getStatusColor(status: string): string {
   }
 }
 
+function getSectionColor(isOdd: boolean, instructionType: string): string {
+  if (instructionType.includes("Blended")) {
+    return "#7d7dff";
+  }
+  if (instructionType.includes("In-Person")) {
+    return "#ff0099";
+  }
+  if (isOdd) {
+    return "#dfdfdf";
+  }
+  return "#efefef";
+}
+
 const styles = {
-  Section: (isOdd: boolean) =>
+  Section: (isOdd: boolean, instructionType: string) =>
     ({
       display: "flex",
       flexDirection: "column",
-      backgroundColor: isOdd ? "#dfdfdf" : "#efefef"
+      backgroundColor: getSectionColor(isOdd, instructionType)
     } as const),
   row: {
     display: "flex",
-    justifyContent: "space-evenly",
+    alignItems: "center",
     flexWrap: "wrap",
     wordWrap: "break-word",
     padding: "10px",
@@ -51,9 +65,9 @@ const styles = {
     }
   },
   status: (status: string) => ({
-    margin: "20px",
-    width: "25px",
-    height: "25px",
+    width: "20px",
+    height: "20px",
+    margin: "10px",
     borderRadius: "50%",
     backgroundColor: getStatusColor(status)
   })
@@ -68,7 +82,8 @@ const Section: React.FC<Props> = ({
   name,
   minUnits,
   maxUnits,
-  isOdd
+  isOdd,
+  instructionMode
 }) => {
   const meetingDateTimes = [];
   const meetingDays: string[] = [];
@@ -83,14 +98,14 @@ const Section: React.FC<Props> = ({
     );
   });
   return (
-    <div css={styles.Section(isOdd)}>
+    <div css={styles.Section(isOdd, instructionMode)}>
       <div css={styles.row}>
         <div css={styles.status(status)} />
         {name && (
           <div
             css={{
-              width: "100px",
-              padding: "5px",
+              width: "75px",
+              padding: "20px",
               display: "flex",
               justifyContent: "center"
             }}
@@ -101,7 +116,7 @@ const Section: React.FC<Props> = ({
         <div
           css={{
             display: "flex",
-            width: "100px",
+            width: "65px",
             flexDirection: "column",
             padding: "5px"
           }}
@@ -118,11 +133,11 @@ const Section: React.FC<Props> = ({
         >
           <div> {type} </div>
         </div>
-        <div css={{ width: "20px", maxWidth: "50vw", padding: "5px" }}>
+        <div css={{ width: "10px", maxWidth: "50vw", padding: "5px" }}>
           {" "}
           {fixCredit(minUnits, maxUnits)}
         </div>
-        <div css={{ width: "150px", maxWidth: "40vw", padding: "5px" }}>
+        <div css={{ width: "100px", maxWidth: "40vw", padding: "5px" }}>
           {" "}
           {fixLocation(location)}{" "}
         </div>

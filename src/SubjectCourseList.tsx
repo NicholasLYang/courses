@@ -64,6 +64,7 @@ export const SubjectCourseList: React.FC<Props> = ({
             year={year}
             season={season}
             isOdd={i % 2 !== 0}
+            sections={course.sections}
           />
         ))}
     </div>

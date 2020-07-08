@@ -15,6 +15,17 @@ const styles = {
     alignItems: "center",
     width: "100vw"
   },
+  banner: {
+    backgroundColor: "#17315c",
+    color: "white",
+    width: "100vw",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  bannerText: {
+    width: "90vw"
+  },
   content: {
     width: "90vw"
   }
@@ -25,6 +36,13 @@ const App: React.FC = () => {
   return (
     <div css={styles.App}>
       <Router>
+        <header css={styles.banner}>
+          <h2 css={styles.bannerText}>
+            International Students: In-person courses are in{" "}
+            <span css={{ color: "#ff0099" }}> MAGENTA</span> and blended courses
+            are in <span css={{ color: "#7d7dff" }}> BLUE </span>{" "}
+          </h2>
+        </header>
         <div css={styles.content}>
           <Switch>
             <Route exact path="/">

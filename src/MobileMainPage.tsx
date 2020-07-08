@@ -18,6 +18,7 @@ const MobileMainPage = () => {
   const { subjectCode, schoolCode, courseCode, year, season } = useParams();
   const history = useHistory();
   let view = <SemesterView year={year!} season={season!} />;
+  let backLink = <Link to="/"> &#8592; Switch Semester </Link>;
   if (year === undefined || season === undefined) {
     history.push("/");
     return (
@@ -33,10 +34,14 @@ const MobileMainPage = () => {
   if (schoolCode !== undefined) {
     if (subjectCode !== undefined) {
       if (courseCode !== undefined) {
+        backLink = (
+          <Link to={`/${year}/${season}/${schoolCode}/`}>
+            &#8592; Switch Course
+          </Link>
+        );
         view = (
           <CourseView
             key={3}
-            shouldDisplayBack={true}
             year={year}
             season={season}
             schoolCode={schoolCode}
@@ -45,10 +50,14 @@ const MobileMainPage = () => {
           />
         );
       } else {
+        backLink = (
+          <Link to={`/${year}/${season}/${schoolCode}/`}>
+            &#8592; Switch Subject
+          </Link>
+        );
         view = (
           <SubjectView
             key={2}
-            shouldDisplayBack={true}
             subjectCode={subjectCode}
             schoolCode={schoolCode}
             year={year!}
@@ -57,20 +66,23 @@ const MobileMainPage = () => {
         );
       }
     } else {
+      backLink = <Link to={`/${year}/${season}/`}>&#8592; Switch School</Link>;
       view = (
         <SchoolView
           key={1}
-          shouldDisplayBack={true}
           schoolCode={schoolCode}
           year={year}
           season={season}
         />
       );
     }
-  } else {
-    view = <SemesterView key={0} year={year} season={season} />;
   }
-  return <div css={styles.MobileMainPage}>{view}</div>;
+  return (
+    <div css={styles.MobileMainPage}>
+      {backLink}
+      {view}
+    </div>
+  );
 };
 
 export default MobileMainPage;

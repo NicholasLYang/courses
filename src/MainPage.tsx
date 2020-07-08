@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { ReactNodeArray } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import SemesterView from "./SemesterView";
 import SchoolView from "./SchoolView";
 import SubjectView from "./SubjectView";
@@ -9,12 +9,17 @@ import CourseView from "./CourseView";
 
 const styles = {
   MainPage: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  views: {
     display: "flex"
   }
 } as const;
 
 const MainPage = () => {
   const { subjectCode, schoolCode, courseCode, year, season } = useParams();
+  let backLink = <Link to="/"> &#8592; Switch Semester </Link>;
   let views: ReactNodeArray = [];
   // There's probably a way more intelligent way of doing this but basically
   // we're going down the list of params and depending on which are undefined,
@@ -23,10 +28,14 @@ const MainPage = () => {
     if (schoolCode !== undefined) {
       if (subjectCode !== undefined) {
         if (courseCode !== undefined) {
+          backLink = (
+            <Link to={`/${year}/${season}/${schoolCode}/`}>
+              &#8592; Switch Subject
+            </Link>
+          );
           views = [
             <SubjectView
               key={2}
-              shouldDisplayBack={true}
               year={year}
               season={season}
               schoolCode={schoolCode}
@@ -42,17 +51,19 @@ const MainPage = () => {
             />
           ];
         } else {
+          backLink = (
+            <Link to={`/${year}/${season}/`}>&#8592; Switch School</Link>
+          );
+
           views = [
             <SchoolView
               key={1}
-              shouldDisplayBack={true}
               year={year}
               season={season}
               schoolCode={schoolCode}
             />,
             <SubjectView
               key={2}
-              shouldDisplayBack={false}
               subjectCode={subjectCode}
               schoolCode={schoolCode}
               year={year}
@@ -65,7 +76,6 @@ const MainPage = () => {
           <SemesterView key={0} year={year} season={season} />,
           <SchoolView
             key={1}
-            shouldDisplayBack={false}
             schoolCode={schoolCode}
             year={year}
             season={season}
@@ -76,7 +86,12 @@ const MainPage = () => {
       views = [<SemesterView key={0} year={year} season={season} />];
     }
   }
-  return <div css={styles.MainPage}>{views}</div>;
+  return (
+    <div css={styles.MainPage}>
+      {backLink}
+      <div css={styles.views}>{views}</div>{" "}
+    </div>
+  );
 };
 
 export default MainPage;

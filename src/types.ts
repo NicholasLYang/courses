@@ -12,6 +12,7 @@ export interface ISection {
   notes: string;
   minUnits: number;
   maxUnits: number;
+  instructionMode: string;
 }
 
 export interface IMeeting {
@@ -40,8 +41,17 @@ export enum RequirementType {
   One
 }
 
+export enum Modifier {
+  Recommended
+}
+
 export type IRequirement =
-  | { type: RequirementType.One; name: string }
+  | {
+      type: RequirementType.One;
+      code: string;
+      name: string;
+      modifier?: Modifier;
+    }
   | {
       type: RequirementType.And | RequirementType.Or;
       args: Array<IRequirement>;

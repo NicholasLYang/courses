@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/core";
 
 import RequirementsChain from "./RequirementsChain";
-import { requirements } from "./constants";
+import { CURRENT_SEASON, CURRENT_YEAR, requirements } from "./constants";
 
 // Allows for major requirements to be compared
 const CompSciRequirementsPage = () => {
@@ -10,18 +10,16 @@ const CompSciRequirementsPage = () => {
     <div
       css={{
         display: "flex",
-        width: "50vw",
-        maxWidth: "600px",
-        justifyContent: "space-around"
+        flexDirection: "column"
       }}
     >
       <RequirementsChain
         name="CAS Computer Science"
-        requirements={requirements["2020-fa-ua-csci"]}
+        requirements={requirements["ua-csci"]}
       />
       <RequirementsChain
         name="Tandon Computer Science"
-        requirements={requirements["2020-fa-uy-cs"]}
+        requirements={requirements["uy-cs"]}
       />
     </div>
   );

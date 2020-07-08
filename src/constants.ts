@@ -3,12 +3,9 @@
   handling odd data
 */
 
-import { IRequirement, RequirementType } from "./types";
+import { IRequirement, Modifier, RequirementType } from "./types";
 
-export const API_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://schedge.torchnyu.com"
-    : "https://schedge.torchnyu.com";
+export const API_URL = "https://schedge.a1liu.com";
 
 export const weirdCourseNames: { [s: string]: string } = {
   "Intro to Computer SCI": "Intro to Computer Science",
@@ -69,49 +66,114 @@ export const seasons = {
 };
 
 export const requirements: { [code: string]: IRequirement[] } = {
-  "2020-fa-ua-csci": [
-    { type: RequirementType.One, name: "csci-ua-101" },
-    { type: RequirementType.One, name: "csci-ua-102" },
-    { type: RequirementType.One, name: "csci-ua-201" },
-    { type: RequirementType.One, name: "csci-ua-202" },
-    { type: RequirementType.One, name: "csci-ua-310" },
+  "ua-csci": [
+    {
+      type: RequirementType.One,
+      code: "CSCI-UA 101",
+      name: "Intro To Computer Science"
+    },
+    { type: RequirementType.One, code: "CSCI-UA 102", name: "Data Structures" },
+    {
+      type: RequirementType.One,
+      code: "CSCI-UA 201",
+      name: "Computer Systems Organization"
+    },
+    {
+      type: RequirementType.One,
+      code: "CSCI-UA 202",
+      name: "Operating Systems"
+    },
+    {
+      type: RequirementType.One,
+      code: "CSCI-UA 310",
+      name: "Basic Algorithms"
+    },
+    {
+      type: RequirementType.One,
+      code: "MATH-UA 121",
+      name: "Calculus I"
+    },
+    {
+      type: RequirementType.One,
+      code: "MATH-UA 120",
+      name: "Discrete Mathematics"
+    },
     {
       type: RequirementType.Choose,
       num: 5,
       args: [
-        { type: RequirementType.One, name: "csci-ua-472" },
-        { type: RequirementType.One, name: "csci-ua-473" },
-        { type: RequirementType.One, name: "csci-ua-480" }
+        { type: RequirementType.One, code: "CSCI-UA 4xx", name: "Electives" }
       ]
     }
   ],
-  "2020-fa-uy-cs": [
-    { type: RequirementType.One, name: "cs-uy-1114" },
-    { type: RequirementType.One, name: "cs-uy-1122" },
-    { type: RequirementType.One, name: "cs-uy-1134" },
-    { type: RequirementType.One, name: "cs-uy-2124" },
-    { type: RequirementType.One, name: "cs-uy-2214" },
-    { type: RequirementType.One, name: "cs-uy-2413" },
-    { type: RequirementType.One, name: "cs-uy-3224" },
-    { type: RequirementType.One, name: "cs-uy-4513" },
-    { type: RequirementType.One, name: "cs-uy-4523" }
-  ],
-  "2020-sp-ua-csci": [
-    { type: RequirementType.One, name: "csci-ua-101" },
-    { type: RequirementType.One, name: "csci-ua-102" },
-    { type: RequirementType.One, name: "csci-ua-201" },
-    { type: RequirementType.One, name: "csci-ua-202" },
-    { type: RequirementType.One, name: "csci-ua-310" },
+  "uy-cs": [
     {
-      type: RequirementType.Choose,
-      num: 5,
-      args: [
-        { type: RequirementType.One, name: "csci-ua-473" },
-        { type: RequirementType.One, name: "csci-ua-476" },
-        { type: RequirementType.One, name: "csci-ua-479" },
-        { type: RequirementType.One, name: "csci-ua-480" },
-        { type: RequirementType.One, name: "csci-ua-490" }
-      ]
+      type: RequirementType.One,
+      code: "CS-UY 1114",
+      name: "Introduction to Programming & Problem Solving"
+    },
+    {
+      type: RequirementType.One,
+      code: "CS-UY 1122",
+      name: "Introduction To Computer Science"
+    },
+    {
+      type: RequirementType.One,
+      code: "CS-UY 1134",
+      name: "Data Structures and Algorithms"
+    },
+    {
+      type: RequirementType.One,
+      code: "CS-UY 2124",
+      name: "Object Oriented Programming"
+    },
+    {
+      type: RequirementType.One,
+      code: "CS-UY 2214",
+      name: "Computer Architecture and Organization"
+    },
+    {
+      type: RequirementType.One,
+      code: "CS-UY 2413",
+      name: "Design & Analysis of Algorithms"
+    },
+    {
+      type: RequirementType.One,
+      code: "CS-UY 3224",
+      name: "Introduction to Operating Systems"
+    },
+    {
+      type: RequirementType.One,
+      code: "CS-UY 4513",
+      name: "Software Engineering"
+    },
+    { type: RequirementType.One, code: "CS-UY 4523", name: "Design Project" },
+
+    {
+      type: RequirementType.One,
+      code: "MA-UY 1024",
+      name: "Calculus I for Engineers"
+    },
+    {
+      type: RequirementType.One,
+      code: "MA-UY 1124",
+      name: "Calculus II for Engineers"
+    },
+    {
+      type: RequirementType.One,
+      code: "MA-UY 2224",
+      name: "Data Analysis"
+    },
+    {
+      type: RequirementType.One,
+      code: "MA-UY 2314",
+      name: "Discrete Mathematics"
+    },
+    {
+      type: RequirementType.One,
+      code: "MA-UY 2034",
+      name: "Linear Algebra and Differential Equations",
+      modifier: Modifier.Recommended
     }
   ]
 };

@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import React from "react";
+
 import { IRequirement, RequirementType } from "./types";
-import CourseLink from "./CourseLink";
-import { CURRENT_SEASON, CURRENT_YEAR } from "./constants";
 
 interface Props {
   req: IRequirement;
@@ -11,30 +10,27 @@ interface Props {
 
 const Requirement: React.FC<Props> = ({ req }) => {
   if (req.type === RequirementType.One) {
-    const [subjectCode, schoolCode, deptCourseId] = req.name.split("-");
-
     return (
       <div
         css={{
           padding: "20px",
-          border: "1px solid #AA4465",
-          borderRadius: "15px",
-          margin: "20px"
+          width: "250px",
+          height: "50px"
         }}
       >
-        <CourseLink
-          year={CURRENT_YEAR}
-          season={CURRENT_SEASON}
-          subjectCode={subjectCode}
-          schoolCode={schoolCode}
-          deptCourseId={deptCourseId}
-          name={req.name}
-        />
+        <span>{req.code}: </span>
+        <span> {req.name}</span>
       </div>
     );
   } else if (req.type === RequirementType.And) {
     return (
-      <div>
+      <div
+        css={{
+          display: "flex",
+          border: "1px solid #AA4465",
+          borderRadius: "15px"
+        }}
+      >
         <span> All of:</span>
         {req.args.map(r => (
           <Requirement req={r} />
@@ -52,7 +48,13 @@ const Requirement: React.FC<Props> = ({ req }) => {
     );
   } else if (req.type === RequirementType.Choose) {
     return (
-      <div>
+      <div
+        css={{
+          display: "flex",
+          padding: "20px",
+          width: `${req.args.length * 300}px`
+        }}
+      >
         <span> {req.num} of:</span>
         {req.args.map(r => (
           <Requirement req={r} />

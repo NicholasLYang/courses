@@ -2,8 +2,9 @@
 import { jsx } from "@emotion/core";
 
 import React, { MouseEvent } from "react";
-import { findCoreReqs, fixCourseName } from "./utils";
+import { fixCourseName } from "./utils";
 import { Link } from "react-router-dom";
+import { ISection } from "./types";
 
 interface Props {
   active?: boolean;
@@ -15,6 +16,7 @@ interface Props {
   season: string;
   isOdd: boolean;
   handleClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
+  sections: ISection[];
 }
 
 const styles = {
@@ -26,6 +28,7 @@ const styles = {
     return {
       fontSize: "1.2rem",
       display: "flex",
+      alignItems: "center",
       backgroundColor,
       padding: "10px",
       transition: "0.1s background-color",
@@ -44,13 +47,29 @@ const styles = {
     minWidth: "50px",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    padding: "5px"
   },
   core: {
-    color: "red"
+    color: "red",
+    width: "50px"
   },
   name: {
-    width: "70%"
+    width: "200px"
+  },
+  inPerson: {
+    borderRadius: "50%",
+    width: "10px",
+    height: "10px",
+    backgroundColor: "#ff0099",
+    margin: "10px"
+  },
+  blended: {
+    borderRadius: "50%",
+    width: "10px",
+    height: "10px",
+    backgroundColor: "#7d7dff",
+    margin: "10px"
   }
 } as const;
 
@@ -63,9 +82,15 @@ const Course: React.FC<Props> = ({
   year,
   season,
   isOdd,
-  handleClick
+  handleClick,
+  sections
 }) => {
-  const isCoreReq = findCoreReqs(schoolCode, subjectCode, deptCourseId);
+  const hasInPerson = sections.some(
+    section => section.instructionMode === "In-Person"
+  );
+  const hasBlended = sections.some(
+    section => section.instructionMode === "Blended (Online & In-Person)"
+  );
   return (
     <Link
       to={`/${year}/${season}/${schoolCode}/${subjectCode}/${deptCourseId}`}
@@ -75,7 +100,8 @@ const Course: React.FC<Props> = ({
     >
       <div css={styles.id}>{deptCourseId}</div>
       <div css={styles.name}>{fixCourseName(name)}</div>
-      {isCoreReq && <div css={styles.core}> Major Req </div>}
+      {hasInPerson && <div css={styles.inPerson}> </div>}
+      {hasBlended && <div css={styles.blended}> </div>}
     </Link>
   );
 };
